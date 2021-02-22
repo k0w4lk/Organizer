@@ -1,0 +1,53 @@
+@mixin font($font_name, $file_name, $weight, $style) {
+  @font-face {
+    font-family: $font_name;
+    src: url('../fonts/#{$file_name}.ttf');
+    font-weight: #{$weight};
+    font-style: #{$style};
+  }
+}
+
+@mixin scrollbar() {
+  &::-webkit-scrollbar {
+    width: 6px;
+    border-radius: 3px;
+    background-color: #ccc;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 100%;
+    border-radius: 3px;
+    background-color: #555;
+  }
+
+  scrollbar-color: #555 #ccc;
+  scrollbar-width: thin;
+}
+
+@mixin mass-button() {
+  height: 30px;
+  width: 30px;
+  border: none;
+  cursor: pointer;
+  background-size: 80%;
+
+  &:active {
+    background-size: 70%;
+    background-position: center;
+    border: 1px solid black;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    border: 1px solid black;
+    border-radius: 50%;
+  }
+
+  &[disabled] {
+    cursor: default;
+
+    &:hover {
+      border: none;
+    }
+  }
+}

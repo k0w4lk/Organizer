@@ -1,0 +1,54 @@
+.l-main-header {
+  max-height: 25%;
+  min-height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #555;
+  padding: 10px;
+
+  &__heading {
+    color: rgb(250, 250, 250);
+    margin: 10px 0;
+  }
+
+  &__add-task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 35px;
+  }
+
+  &__new-task-text {
+    height: 100%;
+    width: 50%;
+    margin-right: 15px;
+    padding: 5px;
+    outline: none;
+
+    &:focus {
+      outline: 1px solid black;
+    }
+  }
+
+  &__new-task-add {
+    height: 100%;
+    padding: 5px 15px;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    background: rgb(40, 200, 40);
+    color: rgb(40, 40, 40);
+    border: 1px solid transparent;
+
+    &:hover {
+      border: 1px solid black;
+      background: lightgreen;
+    }
+
+    &:focus {
+      border: 1px solid black;
+      background: lightgreen;
+    }
+  }
+}
