@@ -1,0 +1,8 @@
+# Игнорировать файл package-lock.json
+package-lock.json
+
+# Игнорировать папку node_modules
+/node_modules
+
+# Игнорировать папку dist
+/dist
