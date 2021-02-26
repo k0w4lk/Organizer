@@ -1,42 +1,64 @@
-const addTaskText = document.querySelector('.l-main-header__new-task-text');
-const addTaskButton = document.querySelector('.l-main-header__new-task-add');
-const doneTaskButton = document.querySelector('.done-task-button');
-const undoneTaskButton = document.querySelector('.undone-task-button');
-const tbdButtons = document.querySelector('.l-main__tbd-buttons');
-const doneButtons = document.querySelector('.l-main__done-buttons');
-const deleteTaskButton = document.querySelector('.delete-task-button');
-const deleteDoneTaskButton = document.querySelector('.delete-done-task-button');
-const toBeDone = document.querySelector('.l-main__tbd');
-const tasksToBeDone = document.querySelector('.l-main__tbd-tasks');
-const toBeDoneCounter = document.querySelector('.l-main__tbd-counter');
-const done = document.querySelector('.l-main__done');
-const tasksDone = document.querySelector('.l-main__done-tasks');
-const doneCounter = document.querySelector('.l-main__done-counter');
-
 let tbdData, doneData;
 
-function chooseTask(event) {
+function chooseToBeDoneTask(event) {
   if (event.target.getAttribute('type') !== 'checkbox') return;
-  event.target.nextSibling.classList.toggle('task-checked');
-  let checkedTasks = tasksToBeDone.querySelectorAll('.task-checked');
-  let editButtons = tasksToBeDone.querySelectorAll('button');
-  for (button of editButtons) {
-    if (checkedTasks.length > 1) button.setAttribute('disabled', '');
-    else button.removeAttribute('disabled');
+  for (let task of tbdData) {
+    if (task.id === event.target.parentNode.dataset.id) {
+      task.checked = !task.checked;
+      saveData();
+    }
   }
+  changeCheckboxStatus(tbdData, tasksDone);
+  event.target.nextSibling.classList.toggle('task-checked');
+  changeEditButtonsStatus(tasksToBeDone);
   buttonsStatus();
 }
 
 function chooseDoneTask(event) {
   if (event.target.getAttribute('type') !== 'checkbox') return;
+  for (let task of doneData) {
+    if (task.id === event.target.parentNode.dataset.id) {
+      task.checked = !task.checked;
+      saveData();
+    }
+  }
+  changeCheckboxStatus(doneData, tasksToBeDone);
   event.target.nextSibling.classList.toggle('task-checked');
-  let checkedTasks = tasksDone.querySelectorAll('.task-checked');
-  let editButtons = tasksDone.querySelectorAll('button');
+  changeEditButtonsStatus(tasksDone);
+  buttonsDoneStatus();
+}
+
+function changeEditButtonsStatus(list) {
+  let checkedTasks = list.querySelectorAll('.task-checked');
+  let editButtons = list.querySelectorAll('button');
   for (button of editButtons) {
     if (checkedTasks.length > 1) button.setAttribute('disabled', '');
     else button.removeAttribute('disabled');
   }
-  buttonsDoneStatus();
+}
+
+function chooseReset(data) {
+  for (let task of data) {
+    task.checked = false;
+    saveData();
+  }
+}
+
+function changeCheckboxStatus(data, list) {
+  let chosenTasks = 0;
+  for (let task of data) {
+    if (task.checked) chosenTasks++;
+  }
+  let checkboxes = list.querySelectorAll('.task-checkbox');
+  if (chosenTasks) {
+    for (let checkbox of checkboxes) {
+      checkbox.setAttribute('disabled', 'disabled');
+    }
+  } else {
+    for (let checkbox of checkboxes) {
+      checkbox.removeAttribute('disabled');
+    }
+  }
 }
 
 function getTasks() {
@@ -50,6 +72,7 @@ function createTaskTemplate(task) {
   const checkbox = document.createElement('input');
   const editButton = document.createElement('button');
   checkbox.setAttribute('type', 'checkbox');
+  checkbox.classList.add('task-checkbox');
   newTaskText.innerText = task.task;
   editButton.setAttribute('data-button-name', 'Редактировать');
   editButton.setAttribute('title', 'Редактировать');
@@ -66,6 +89,7 @@ function createTaskDoneTemplate(task) {
   const checkbox = document.createElement('input');
   const editButton = document.createElement('button');
   checkbox.setAttribute('type', 'checkbox');
+  checkbox.classList.add('task-checkbox');
   doneTaskText.innerText = task.task;
   editButton.setAttribute('data-button-name', 'Редактировать');
   editButton.setAttribute('title', 'Редактировать');
@@ -85,6 +109,8 @@ function renderTasks() {
   buttonsDoneStatus();
   counterUpdate(toBeDoneCounter, tasksToBeDone);
   counterUpdate(doneCounter, tasksDone);
+  chooseReset(tbdData);
+  chooseReset(doneData);
 }
 
 function buttonsStatus() {
@@ -200,12 +226,16 @@ function editDoneTask(event) {
 function onAddTask() {
   const taskId = Math.random().toString(32).slice(3);
   const taskName = addTaskText.value;
+  const checked = false;
   addTaskText.focus();
-  createTask(taskId, taskName, (checked = undefined), (toEdit = undefined));
+  createTask(taskId, taskName, checked, (toEdit = undefined));
 }
 
 function createTask(id, task, checked, toEdit) {
-  if (!task) return;
+  if (!task) {
+    inputErrorText.innerText = 'Вы не ввели название задачи';
+    return;
+  }
   saveData({ id, task, checked, toEdit });
   renderTasks();
 }
@@ -247,6 +277,21 @@ function doneTask() {
   saveData();
   renderTasks();
 }
+
+addTaskText.addEventListener('blur', () => {
+  inputErrorText.innerText = '';
+});
+
+// addTaskText.addEventListener('keydown', () => {
+//   inputErrorText.innerText = '';
+// });
+
+addTaskText.addEventListener('input', () => {
+  inputErrorText.innerText = '';
+  if (addTaskText.value.length === 30) {
+    inputErrorText.innerText = 'Максимальное количество символов - 30';
+  }
+});
 
 function undoneTask() {
   let tasks = document.querySelector('.l-main__done-tasks');
@@ -306,7 +351,7 @@ counterUpdate(toBeDoneCounter, tasksToBeDone);
 counterUpdate(doneCounter, tasksDone);
 
 addTaskButton.addEventListener('click', onAddTask);
-tasksToBeDone.addEventListener('click', chooseTask);
+tasksToBeDone.addEventListener('click', chooseToBeDoneTask);
 tasksDone.addEventListener('click', chooseDoneTask);
 tasksToBeDone.addEventListener('click', editTask);
 tasksDone.addEventListener('click', editDoneTask);

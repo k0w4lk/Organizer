@@ -587,6 +587,7 @@ template {
 
 .l-main__done-tasks li span {
   text-decoration: line-through;
+  color: darkgrey;
 }
 
 .edit-button {
@@ -779,15 +780,30 @@ template {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 35px;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.l-main-header__input-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 50%;
+}
+
+.l-main-header__input-error {
+  color: red;
+  margin-bottom: 2px;
 }
 
 .l-main-header__new-task-text {
   height: 100%;
-  width: 50%;
+  width: 100%;
   margin-right: 15px;
   padding: 5px;
   outline: none;
@@ -798,7 +814,7 @@ template {
 }
 
 .l-main-header__new-task-add {
-  height: 100%;
+  height: 35px;
   padding: 5px 15px;
   border-radius: 5px;
   outline: none;
