@@ -1,25 +1,20 @@
+@import './vendors/reset.scss';
+
+@import './helpers/mixins.scss';
+@import './helpers/dynamic.scss';
+
+@import './fonts/fonts.scss';
+
+@import './layout/main/main.scss';
+@import './layout/main/main-header.scss';
+@import './layout/main/main-tasks.scss';
+
 *,
 *::after,
 *::before {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
-  font-family: Raleway, serif;
 }
 
 body {
   background: #cfc;
 }
-
-@import './vendors/normalize.scss';
-
-@import './helpers/mixins.scss';
-@import './helpers/dynamic.scss';
-
-@import './components/main-container.scss';
-@import './components/mass-button.scss';
-
-@import './fonts/fonts.scss';
-
-@import './layout/main.scss';
-@import './layout/main-header.scss';

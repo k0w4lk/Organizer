@@ -1,19 +1,24 @@
-const addTaskText = document.querySelector('.l-main-header__new-task-text');
-const addTaskButton = document.querySelector('.l-main-header__new-task-add');
-const doneTaskButton = document.querySelector('.done-task-button');
-const undoneTaskButton = document.querySelector('.undone-task-button');
-const tbdButtons = document.querySelector('.l-main__tbd-buttons');
-const doneButtons = document.querySelector('.l-main__done-buttons');
-const deleteTaskButton = document.querySelector('.delete-task-button');
-const deleteDoneTaskButton = document.querySelector('.delete-done-task-button');
-const toBeDone = document.querySelector('.l-main__tbd');
-const tasksToBeDone = document.querySelector('.l-main__tbd-tasks');
+// HEADER
+
+const addTaskErrorText = document.querySelector('.l-main-header__input-error'),
+  addTaskText = document.querySelector('.l-main-header__input-task-text'),
+  addTaskButton = document.querySelector('.l-main-header__new-task-add-button');
+
+// TASKS
+//TO BE DONE
+const doneTaskButton = document.querySelector('.l-main-tasks__done-button');
+const undoneTaskButton = document.querySelector('.l-main-tasks__undone-button');
+const tbdButtons = document.querySelector('#to-be-done-mass-action-buttons');
+const doneButtons = document.querySelector('#done-mass-action-buttons');
+const deleteTaskButton = document.querySelector('#to-be-done-delete-button');
+const deleteDoneTaskButton = document.querySelector('#done-delete-button');
+const toBeDone = document.querySelector('#tasks-to-be-done-container');
+const tasksToBeDone = document.querySelector('#to-be-done-list');
 const toBeDoneCounter = document.querySelector('.l-main__tbd-counter');
-const done = document.querySelector('.l-main__done');
-const tasksDone = document.querySelector('.l-main__done-tasks');
-const doneCounter = document.querySelector('.l-main__done-counter');
-const inputErrorText = document.querySelector('.l-main-header__input-error');
-;
+const done = document.querySelector('#tasks-done-container');
+const tasksDone = document.querySelector('#done-list');
+const doneCounter = document.querySelector('#tasks-done-counter');
+
 let tbdData, doneData;
 
 function chooseToBeDoneTask(event) {
@@ -27,7 +32,12 @@ function chooseToBeDoneTask(event) {
   changeCheckboxStatus(tbdData, tasksDone);
   event.target.nextSibling.classList.toggle('task-checked');
   changeEditButtonsStatus(tasksToBeDone);
-  buttonsStatus();
+  functionalButtonsStatus(
+    tasksToBeDone,
+    deleteTaskButton,
+    doneTaskButton,
+    tbdButtons
+  );
 }
 
 function chooseDoneTask(event) {
@@ -41,7 +51,12 @@ function chooseDoneTask(event) {
   changeCheckboxStatus(doneData, tasksToBeDone);
   event.target.nextSibling.classList.toggle('task-checked');
   changeEditButtonsStatus(tasksDone);
-  buttonsDoneStatus();
+  functionalButtonsStatus(
+    tasksDone,
+    deleteDoneTaskButton,
+    undoneTaskButton,
+    doneButtons
+  );
 }
 
 function changeEditButtonsStatus(list) {
@@ -53,7 +68,7 @@ function changeEditButtonsStatus(list) {
   }
 }
 
-function chooseReset(data) {
+function resetChosenTasks(data) {
   for (let task of data) {
     task.checked = false;
     saveData();
@@ -82,84 +97,68 @@ function getTasks() {
   doneData = JSON.parse(localStorage.getItem('doneData')) || [];
 }
 
-function createTaskTemplate(task) {
-  const newTask = document.createElement('li');
-  const newTaskText = document.createElement('span');
+function createTaskTemplate(task, taskList) {
+  const taskContainer = document.createElement('li');
+  const taskText = document.createElement('span');
   const checkbox = document.createElement('input');
   const editButton = document.createElement('button');
   checkbox.setAttribute('type', 'checkbox');
   checkbox.classList.add('task-checkbox');
-  newTaskText.innerText = task.task;
+  taskText.innerText = task.task;
+  taskText.classList.add('task-text');
   editButton.setAttribute('data-button-name', 'Редактировать');
   editButton.setAttribute('title', 'Редактировать');
   editButton.classList.add('edit-button');
-  newTask.setAttribute('data-id', task.id);
-  newTask.append(checkbox, newTaskText, editButton);
-  tasksToBeDone.append(newTask);
+  taskContainer.setAttribute('data-id', task.id);
+  taskContainer.classList.add('task-container');
+  taskContainer.append(checkbox, taskText, editButton);
+  taskList.append(taskContainer);
   addTaskText.value = '';
-}
-
-function createTaskDoneTemplate(task) {
-  const doneTask = document.createElement('li');
-  const doneTaskText = document.createElement('span');
-  const checkbox = document.createElement('input');
-  const editButton = document.createElement('button');
-  checkbox.setAttribute('type', 'checkbox');
-  checkbox.classList.add('task-checkbox');
-  doneTaskText.innerText = task.task;
-  editButton.setAttribute('data-button-name', 'Редактировать');
-  editButton.setAttribute('title', 'Редактировать');
-  editButton.classList.add('edit-button');
-  doneTask.setAttribute('data-id', task.id);
-  doneTask.append(checkbox, doneTaskText, editButton);
-  tasksDone.append(doneTask);
 }
 
 function renderTasks() {
   getTasks();
   tasksToBeDone.innerHTML = '';
-  for (let task of tbdData) createTaskTemplate(task);
+  for (let task of tbdData) createTaskTemplate(task, tasksToBeDone);
   tasksDone.innerHTML = '';
-  for (let task of doneData) createTaskDoneTemplate(task);
-  buttonsStatus();
-  buttonsDoneStatus();
+  for (let task of doneData) createTaskTemplate(task, tasksDone);
+  functionalButtonsStatus(
+    tasksToBeDone,
+    deleteTaskButton,
+    doneTaskButton,
+    tbdButtons
+  );
+  functionalButtonsStatus(
+    tasksDone,
+    deleteDoneTaskButton,
+    undoneTaskButton,
+    doneButtons
+  );
   counterUpdate(toBeDoneCounter, tasksToBeDone);
   counterUpdate(doneCounter, tasksDone);
-  chooseReset(tbdData);
-  chooseReset(doneData);
+  resetChosenTasks(tbdData);
+  resetChosenTasks(doneData);
 }
 
-function buttonsStatus() {
-  let checkedTasks = tasksToBeDone.querySelectorAll('.task-checked');
+function functionalButtonsStatus(
+  tasks,
+  deleteButton,
+  statusButton,
+  functionalButtons
+) {
+  let checkedTasks = tasks.querySelectorAll('.task-checked');
   if (checkedTasks.length !== 0) {
-    deleteTaskButton.removeAttribute('disabled');
-    doneTaskButton.removeAttribute('disabled');
+    deleteButton.removeAttribute('disabled');
+    statusButton.removeAttribute('disabled');
   } else {
-    deleteTaskButton.setAttribute('disabled', '');
-    doneTaskButton.setAttribute('disabled', '');
+    deleteButton.setAttribute('disabled', '');
+    statusButton.setAttribute('disabled', '');
   }
 
-  if (tasksToBeDone.children.length === 0) {
-    tbdButtons.style.display = 'none';
+  if (tasks.children.length === 0) {
+    functionalButtons.style.display = 'none';
   } else {
-    tbdButtons.style.display = 'block';
-  }
-}
-
-function buttonsDoneStatus() {
-  let checkedTasks = tasksDone.querySelectorAll('.task-checked');
-  if (checkedTasks.length !== 0) {
-    deleteDoneTaskButton.removeAttribute('disabled');
-    undoneTaskButton.removeAttribute('disabled');
-  } else {
-    deleteDoneTaskButton.setAttribute('disabled', '');
-    undoneTaskButton.setAttribute('disabled', '');
-  }
-
-  if (tasksDone.children.length === 0) {
-    doneButtons.style.display = 'none';
-  } else {
-    doneButtons.style.display = 'block';
+    functionalButtons.style.display = 'block';
   }
 }
 
@@ -168,6 +167,7 @@ function editTask(event) {
   if (event.target.getAttribute('data-button-name') === 'Редактировать') {
     deleteTaskButton.setAttribute('disabled', '');
     doneTaskButton.setAttribute('disabled', '');
+    event.target.style;
     let checkboxes = document.querySelectorAll("input[type='checkbox']");
     for (let item of checkboxes) {
       item.setAttribute('disabled', '');
@@ -249,7 +249,7 @@ function onAddTask() {
 
 function createTask(id, task, checked, toEdit) {
   if (!task) {
-    inputErrorText.innerText = 'Вы не ввели название задачи';
+    addTaskErrorText.innerText = 'Вы не ввели название задачи';
     return;
   }
   saveData({ id, task, checked, toEdit });
@@ -295,17 +295,13 @@ function doneTask() {
 }
 
 addTaskText.addEventListener('blur', () => {
-  inputErrorText.innerText = '';
+  addTaskErrorText.innerText = '';
 });
 
-// addTaskText.addEventListener('keydown', () => {
-//   inputErrorText.innerText = '';
-// });
-
 addTaskText.addEventListener('input', () => {
-  inputErrorText.innerText = '';
+  addTaskErrorText.innerText = '';
   if (addTaskText.value.length === 30) {
-    inputErrorText.innerText = 'Максимальное количество символов - 30';
+    addTaskErrorText.innerText = 'Максимальное количество символов - 30';
   }
 });
 
@@ -361,8 +357,6 @@ function counterUpdate(counter, counterBase) {
 }
 
 renderTasks();
-buttonsStatus();
-buttonsDoneStatus();
 counterUpdate(toBeDoneCounter, tasksToBeDone);
 counterUpdate(doneCounter, tasksDone);
 
@@ -375,4 +369,3 @@ deleteTaskButton.addEventListener('click', onDeleteTBDTask);
 deleteDoneTaskButton.addEventListener('click', onDeleteDoneTask);
 doneTaskButton.addEventListener('click', doneTask);
 undoneTaskButton.addEventListener('click', undoneTask);
-;

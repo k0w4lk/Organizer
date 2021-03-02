@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
   <meta charset='utf-8'>
   <link rel='stylesheet' href='style/css/style.min.css'>
@@ -8,46 +8,44 @@
   </head>
   
   <body>
-    <div class="c-main-container">
-      <main class="l-main">
-  <header class='l-main-header'>
-  <h1 class="l-main-header__heading">МОИ ЗАДАЧИ</h1>
-  <div class="l-main-header__add-task">
-    <div class="l-main-header__input-container">
-      <span class="l-main-header__input-error"></span>
-      <input type="text" class="l-main-header__new-task-text" placeholder="Введите название задачи..." maxlength="30">
-    </div>
-    <button class="l-main-header__new-task-add">Добавить задачу</button>
-  </div>
-</header>
-
-  <div class="l-main__tasks">
-    <div class="l-main__tbd">
-      <div class="l-main__tbd-info">
-        <h2 class="l-main__tbd-heading">Задачи к выполнению:</h2>
-        <div class="l-main__tbd-counter">0</div>
+    <main class="l-main">
+      <div class="l-main__container">
+        <header class='l-main-header'>
+          <h1 class="l-main-header__heading">MY TASKS</h1>
+          <div class="l-main-header__add-task">
+            <div class="l-main-header__input-container">
+              <span class="l-main-header__input-error"></span>
+              <input type="text" class="l-main-header__input-task-text" placeholder="Enter a name for the task..." maxlength="30">
+            </div>
+            <button class="l-main-header__new-task-add-button">Add</button>
+          </div>
+        </header>
+        <div class="l-main-tasks">
+          <div class="l-main-tasks__container" id='tasks-to-be-done-container'>
+            <div class="l-main-tasks__info">
+              <h2 class="l-main-tasks__info-heading">Tasks to be completed - </h2>
+              <div class="l-main-tasks__info-counter">0</div>
+            </div>
+            <div class="l-main-tasks__mass-action-buttons" id="to-be-done-mass-action-buttons">
+              <input type='button' disabled title="Mark as done" class="l-main-tasks__done-button">
+              <input type='button' disabled title="Delete" class="l-main-tasks__delete-button" id="to-be-done-delete-button">
+            </div>
+            <ul class="l-main-tasks__list" id="to-be-done-list"></ul>
+          </div>
+          <div class="l-main-tasks__container" id='tasks-done-container'>
+            <div class="l-main-tasks__info">
+              <h2 class="l-main-tasks__info-heading">Completed tasks - </h2>
+              <div class="l-main-tasks__info-counter" id=tasks-done-counter>0</div>
+            </div>
+            <div class="l-main-tasks__mass-action-buttons" id="done-mass-action-buttons">
+              <input type='button' disabled title="Return for execution" class="l-main-tasks__undone-button">
+              <input type='button' disabled title="Delete" class="l-main-tasks__delete-button" id="done-delete-button">
+            </div>
+            <ul class="l-main-tasks__list" id="#done-list"></ul>
+          </div>
+        </div>
       </div>
-      <div class="l-main__tbd-buttons">
-        <input type='button' disabled title="Отметить как выполненное" class="done-task-button done-button">
-        <input type='button' disabled title="Удалить" class="delete-task-button delete-button">
-      </div>
-      <ul class="l-main__tbd-tasks"></ul>
-    </div>
-    <div class="l-main__done">
-      <div class="l-main__done-info">
-        <h2 class="l-main__done-heading">Выполнено:</h2>
-        <div class="l-main__done-counter">0</div>
-      </div>
-      <div class="l-main__done-buttons">
-        <input type='button' disabled title="Вернуть на выполнение" class="undone-task-button undone-button">
-        <input type='button' disabled title="Удалить" class="delete-done-task-button delete-button">
-      </div>
-      <div class="l-main__done-tasks"></div>
-    </div>
-  </div>
-</main>
-
-    </div>
-    <script src='js/index.min.js'></script>
+    </main>
+    <script src='js/index.js'></script>
   </body>
 </html>

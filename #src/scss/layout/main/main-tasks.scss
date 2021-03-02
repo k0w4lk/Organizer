@@ -1,0 +1,77 @@
+.l-main-tasks {
+  display: flex;
+  flex-direction: column;
+  background-color: #fef;
+  width: 100%;
+  padding: 10px;
+
+  &__container {
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  &__info {
+    display: flex;
+    margin-bottom: 8px;
+
+    &-heading {
+      @include text(400, 22px, 26px, rgb(40, 40, 40));
+    }
+
+    &-counter {
+      @include text(500, 24px, 26px, rgb(40, 40, 40));
+
+      margin-left: 6px;
+    }
+  }
+
+  &__mass-action-buttons {
+    margin-bottom: 8px;
+  }
+
+  &__done-button {
+    @include mass-action-button(
+      30px,
+      30px,
+      url(../../images/checkmark.svg) no-repeat center
+    );
+  }
+
+  &__undone-button {
+    @include mass-action-button(
+      30px,
+      30px,
+      url(../../images/arrow-up.svg) no-repeat center
+    );
+  }
+
+  &__delete-button {
+    @include mass-action-button(
+      30px,
+      30px,
+      url(../../images/trash.svg) no-repeat center
+    );
+  }
+
+  &__list {
+    @include scrollbar();
+
+    list-style-type: none;
+    overflow-y: auto;
+    max-height: 144px;
+    max-width: 50%;
+    padding-right: 8px;
+
+    & li {
+      display: flex;
+      align-items: flex-start;
+      padding: 2px;
+    }
+
+    & li input {
+      margin-right: 10px;
+    }
+  }
+}

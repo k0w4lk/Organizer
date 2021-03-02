@@ -7,6 +7,16 @@
   }
 }
 
+@mixin text($font-weight, $font-size, $line-height, $color) {
+  font: {
+    weight: $font-weight;
+    size: $font-size;
+    family: Raleway, serif;
+  }
+  line-height: $line-height;
+  color: $color;
+}
+
 @mixin scrollbar() {
   &::-webkit-scrollbar {
     width: 6px;
@@ -24,15 +34,23 @@
   scrollbar-width: thin;
 }
 
-@mixin mass-button() {
-  height: 30px;
-  width: 30px;
-  border: none;
+@mixin mass-action-button($height, $width, $bg) {
+  height: $height;
+  width: $width;
+  border: 1px solid #ccc;
+  border-radius: 50%;
   cursor: pointer;
-  background-size: 80%;
+  background: $bg,
+    linear-gradient(
+      to right,
+      rgba(120, 120, 120, 0.1) 0%,
+      rgba(120, 120, 120, 0.1) 100%
+    );
+  background-size: 90%;
+  box-shadow: 1px 1px 1px black;
 
   &:active {
-    background-size: 70%;
+    background-size: 85%;
     background-position: center;
     border: 1px solid black;
     border-radius: 50%;
@@ -45,6 +63,10 @@
 
   &[disabled] {
     cursor: default;
+    background: $bg;
+    background-size: 80%;
+    box-shadow: none;
+    border: none;
 
     &:hover {
       border: none;

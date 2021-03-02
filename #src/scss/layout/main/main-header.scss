@@ -1,15 +1,14 @@
 .l-main-header {
-  max-height: 25%;
-  min-height: 130px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 130px;
   background: #555;
   padding: 10px;
 
   &__heading {
-    color: rgb(250, 250, 250);
-    margin: 10px 0;
+    @include text(700, 32px, 32px, rgb(250, 250, 250));
+    letter-spacing: 3px;
   }
 
   &__add-task {
@@ -21,18 +20,19 @@
   &__input-container {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 75%;
   }
 
   &__input-error {
-    color: red;
+    @include text(400, 12px, 12px, rgb(230, 0, 0));
+    height: 12px;
     margin-bottom: 2px;
   }
 
-  &__new-task-text {
-    height: 100%;
+  &__input-task-text {
+    @include text(400, 16px, 16px, rgb(40, 40, 40));
+    height: 35px;
     width: 100%;
-    margin-right: 15px;
     padding: 5px;
     outline: none;
 
@@ -41,24 +41,23 @@
     }
   }
 
-  &__new-task-add {
+  &__new-task-add-button {
+    @include text(400, 16px, 16px, rgb(40, 40, 40));
     height: 35px;
     padding: 5px 15px;
     border-radius: 5px;
     outline: none;
     cursor: pointer;
     background: rgb(40, 200, 40);
-    color: rgb(40, 40, 40);
     border: 1px solid transparent;
 
     &:hover {
-      border: 1px solid black;
+      border-color: black;
       background: lightgreen;
     }
 
     &:focus {
-      border: 1px solid black;
-      background: lightgreen;
+      border-color: black;
     }
   }
 }

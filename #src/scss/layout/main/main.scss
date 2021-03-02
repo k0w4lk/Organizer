@@ -1,0 +1,16 @@
+.l-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    max-width: 768px;
+    width: 100%;
+    height: 90%;
+    padding: 0 4px;
+  }
+}
