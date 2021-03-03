@@ -265,4 +265,3 @@ deleteAllDone.addEventListener('click', deleteTasksDone);
 getTasksData();
 resetCheckboxesStatuses();
 renderTasks();
-;
