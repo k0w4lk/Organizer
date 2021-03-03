@@ -169,6 +169,18 @@ function chooseAllTasks(
     : (otherChooseAllTasksButton.disabled = true);
   changeCheckboxStatus(data, otherList);
   changeEditButtonsStatus(list);
+  functionalButtonsStatus(
+    tasksToBeDone,
+    deleteTaskButton,
+    doneTaskButton,
+    tbdButtons
+  );
+  functionalButtonsStatus(
+    tasksDone,
+    deleteDoneTaskButton,
+    undoneTaskButton,
+    doneButtons
+  );
 }
 
 chooseAllToBeDoneTasksButton.addEventListener('click', () =>
