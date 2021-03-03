@@ -135,55 +135,6 @@ table {
   border-spacing: 0;
 }
 
-.task-checked {
-  color: blue;
-}
-
-.task-text {
-  width: 85%;
-  word-wrap: break-word;
-}
-
-.edit-button {
-  height: 20px;
-  width: 20px;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  background: url("../../images/pencil.svg") center no-repeat, -webkit-gradient(linear, left top, right top, from(rgba(120, 120, 120, 0.1)), to(rgba(120, 120, 120, 0.1)));
-  background: url("../../images/pencil.svg") center no-repeat, -o-linear-gradient(left, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
-  background: url("../../images/pencil.svg") center no-repeat, linear-gradient(to right, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
-  background-size: 90%;
-  -webkit-box-shadow: 1px 1px 1px black;
-          box-shadow: 1px 1px 1px black;
-  outline: none;
-}
-
-.edit-button:active {
-  background-size: 85%;
-  background-position: center;
-  border: 1px solid black;
-  border-radius: 50%;
-}
-
-.edit-button:hover {
-  border: 1px solid black;
-  border-radius: 50%;
-}
-
-.edit-button[disabled] {
-  cursor: default;
-  background: url("../../images/pencil.svg") center no-repeat;
-  background-size: 80%;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  border: none;
-}
-
-.edit-button[disabled]:hover {
-  border: none;
-}
-
 @font-face {
   font-family: "Raleway";
   src: url("../../fonts/Raleway-Regular.ttf");
@@ -331,7 +282,6 @@ table {
 }
 
 .l-main-tasks__container {
-  border: 1px solid red;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -368,6 +318,27 @@ table {
 
 .l-main-tasks__mass-action-buttons {
   margin-bottom: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-left: 2px;
+}
+
+.l-main-tasks__mass-action-buttons_active {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.l-main-tasks__mass-action-buttons_hidden {
+  display: none;
+}
+
+.l-main-tasks__choose-all-button {
+  margin: 0 10px 0 0;
 }
 
 .l-main-tasks__done-button {
@@ -509,7 +480,7 @@ table {
   background-color: #555;
 }
 
-.l-main-tasks__list li {
+.l-main-task__container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -517,10 +488,76 @@ table {
       -ms-flex-align: start;
           align-items: flex-start;
   padding: 2px;
+  min-height: 24px;
 }
 
-.l-main-tasks__list li input {
-  margin-right: 10px;
+.l-main-task__checkbox {
+  margin: 5px 10px 0 0;
+}
+
+.l-main-task__text {
+  font-weight: 400;
+  font-size: 20px;
+  font-family: Raleway, serif;
+  line-height: 24px;
+  color: #282828;
+  width: 85%;
+  word-wrap: break-word;
+}
+
+.l-main-task__edit-input {
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Raleway, serif;
+  line-height: 14px;
+  color: #282828;
+  width: 85%;
+  min-height: 24px;
+}
+
+.l-main-task__edit-button {
+  height: 20px;
+  width: 20px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  background: url("../../images/pencil.svg") center no-repeat, -webkit-gradient(linear, left top, right top, from(rgba(120, 120, 120, 0.1)), to(rgba(120, 120, 120, 0.1)));
+  background: url("../../images/pencil.svg") center no-repeat, -o-linear-gradient(left, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
+  background: url("../../images/pencil.svg") center no-repeat, linear-gradient(to right, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
+  background-size: 90%;
+  -webkit-box-shadow: 1px 1px 1px black;
+          box-shadow: 1px 1px 1px black;
+  outline: none;
+  margin-left: auto;
+}
+
+.l-main-task__edit-button:active {
+  background-size: 85%;
+  background-position: center;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.l-main-task__edit-button:hover {
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.l-main-task__edit-button[disabled] {
+  cursor: default;
+  background: url("../../images/pencil.svg") center no-repeat;
+  background-size: 80%;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: none;
+}
+
+.l-main-task__edit-button[disabled]:hover {
+  border: none;
+}
+
+.l-main-task_checked {
+  color: blue;
 }
 
 *,

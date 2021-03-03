@@ -6,7 +6,6 @@
   padding: 10px;
 
   &__container {
-    border: 1px solid red;
     display: flex;
     flex-direction: column;
     margin-bottom: 10px;
@@ -29,6 +28,21 @@
 
   &__mass-action-buttons {
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 2px;
+
+    &_active {
+      display: flex;
+    }
+
+    &_hidden {
+      display: none;
+    }
+  }
+
+  &__choose-all-button {
+    margin: 0 10px 0 0;
   }
 
   &__done-button {
@@ -63,15 +77,5 @@
     max-height: 144px;
     max-width: 50%;
     padding-right: 8px;
-
-    & li {
-      display: flex;
-      align-items: flex-start;
-      padding: 2px;
-    }
-
-    & li input {
-      margin-right: 10px;
-    }
   }
 }

@@ -1,13 +1,13 @@
 @import './vendors/reset.scss';
 
 @import './helpers/mixins.scss';
-@import './helpers/dynamic.scss';
 
 @import './fonts/fonts.scss';
 
 @import './layout/main/main.scss';
 @import './layout/main/main-header.scss';
 @import './layout/main/main-tasks.scss';
+@import './layout/main/main-task.scss';
 
 *,
 *::after,
