@@ -5,6 +5,9 @@ const addTaskErrorText = document.querySelector('.l-main-header__input-error'),
 const toBeDone = document.querySelector('#tasks-to-be-done-container'),
   toBeDoneCounter = document.querySelector('#tasks-to-be-done-counter'),
   tbdButtons = document.querySelector('#to-be-done-mass-action-buttons'),
+  chooseAllToBeDoneTasksButton = document.querySelector(
+    '#choose-all-to-be-done-tasks-button'
+  ),
   doneTaskButton = document.querySelector('.l-main-tasks__done-button'),
   deleteTaskButton = document.querySelector('#to-be-done-delete-button'),
   tasksToBeDone = document.querySelector('#to-be-done-list');
@@ -12,6 +15,9 @@ const toBeDone = document.querySelector('#tasks-to-be-done-container'),
 const done = document.querySelector('#tasks-done-container'),
   doneCounter = document.querySelector('#tasks-done-counter'),
   doneButtons = document.querySelector('#done-mass-action-buttons'),
+  chooseAllDoneTasksButton = document.querySelector(
+    '#choose-all-done-tasks-button'
+  ),
   undoneTaskButton = document.querySelector('.l-main-tasks__undone-button'),
   deleteDoneTaskButton = document.querySelector('#done-delete-button'),
   tasksDone = document.querySelector('#done-list');
@@ -63,8 +69,16 @@ function renderTasks() {
   );
   counterUpdate(toBeDoneCounter, tasksToBeDone);
   counterUpdate(doneCounter, tasksDone);
-  resetChosenTasks(tbdData);
-  resetChosenTasks(doneData);
+  resetChosenTasks(
+    tbdData,
+    chooseAllToBeDoneTasksButton,
+    chooseAllDoneTasksButton
+  );
+  resetChosenTasks(
+    doneData,
+    chooseAllDoneTasksButton,
+    chooseAllToBeDoneTasksButton
+  );
 }
 
 function createTask(id, task, checked, toEdit) {
@@ -122,6 +136,61 @@ function chooseDoneTask(event) {
   );
 }
 
+function chooseAllTasks(
+  data,
+  list,
+  otherData,
+  otherList,
+  otherChooseAllTasksButton
+) {
+  data.forEach((item) =>
+    item.checked ? (item.checked = false) : (item.checked = true)
+  );
+  saveData();
+  for (item of data) {
+    if (item.checked === true) {
+      for (let i = 0; i < list.children.length; i++) {
+        if (item.id === list.children[i].dataset.id) {
+          list.children[i].children[0].checked = true;
+          list.children[i].children[1].classList.add('l-main-task_checked');
+        }
+      }
+    } else {
+      for (let i = 0; i < list.children.length; i++) {
+        if (item.id === list.children[i].dataset.id) {
+          list.children[i].children[0].checked = false;
+          list.children[i].children[1].classList.remove('l-main-task_checked');
+        }
+      }
+    }
+  }
+  otherChooseAllTasksButton.disabled
+    ? (otherChooseAllTasksButton.disabled = false)
+    : (otherChooseAllTasksButton.disabled = true);
+  changeCheckboxStatus(data, otherList);
+  changeEditButtonsStatus(list);
+}
+
+chooseAllToBeDoneTasksButton.addEventListener('click', () =>
+  chooseAllTasks(
+    tbdData,
+    tasksToBeDone,
+    doneData,
+    tasksDone,
+    chooseAllDoneTasksButton
+  )
+);
+
+chooseAllDoneTasksButton.addEventListener('click', () =>
+  chooseAllTasks(
+    doneData,
+    tasksDone,
+    tbdData,
+    tasksToBeDone,
+    chooseAllToBeDoneTasksButton
+  )
+);
+
 function changeEditButtonsStatus(list) {
   let checkedTasks = list.querySelectorAll('.l-main-task_checked');
   let editButtons = list.querySelectorAll('button');
@@ -131,9 +200,11 @@ function changeEditButtonsStatus(list) {
   }
 }
 
-function resetChosenTasks(data) {
+function resetChosenTasks(data, allButton, otherAllButton) {
   for (let task of data) {
     task.checked = false;
+    allButton.checked = false;
+    otherAllButton.disabled = false;
     saveData();
   }
 }
