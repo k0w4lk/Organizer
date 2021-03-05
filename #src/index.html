@@ -12,15 +12,43 @@
       <div class="l-main__container">
         <header class='l-main-header'>
           <h1 class="l-main-header__heading">MY ORGANIZER</h1>
-          <div class="l-main-header__add-task">
-            <div class="l-main-header__input-container">
-              <span class="l-main-header__input-error" id="new-task-error"></span>
-              <input type="text" class="l-main-header__input-task-text" placeholder="Enter a name for the task..." maxlength="30" id="new-task-text">
+          <span class="l-main-header__date" id='current-date'></span>
+          <div class="l-main-header__info">
+            <div class="l-main-header__quote-of-day">
+              <h2 class="l-main-header__quote-of-day-heading">Quote of the Day</h2>
+              <h3 class="l-main-header__quote-of-day-author" id="qod-author"></h3>
+              <q class="l-main-header__quote-of-day-text" id="qod-text"></q>
             </div>
-            <button class="l-main-header__new-task-add-button" id="new-task-add">Add</button>
+            <div class="l-main-header__weather" id="weather-block">
+              <div class="l-main-header__weather-preloader" id="weather-preload">
+                <div class="l-main-header__weather-preloader-center"></div>
+              </div>
+              <div class="l-main-header__weather-loaded l-main-header__weather-loaded_hidden" id="weather-load">
+                <div class="l-main-header__weather-info">
+                  <div class="l-main-header__weather-text">
+                    <span class="l-main-header__weather-city" id='weather-city'></span>
+                    <span class="l-main-header__weather-temperature" id='weather-temperature'></span>
+                  </div>
+                  <span class="l-main-header__weather-feels-like" id='feels-like'></span>
+                  <div class="l-main-header__weather-change">
+                    <span class="l-main-header__weather-change-city" id="change-city"></span>
+                    <span class="l-main-header__weather-change-button" id="change-city-button">Change.</span>
+                  </div>
+                </div>
+                <img class="l-main-header__weather-icon" alt='weather-icon' id='weather-icon'>
+              </div>
+            </div>
           </div>
         </header>
         <div class="l-main-tasks">
+          <h2 class="l-main-tasks__heading">My Tasks</h2>
+          <div class="l-main-tasks-header__add-task">
+            <div class="l-main-tasks-header__input-container">
+              <span class="l-main-tasks-header__input-error" id="new-task-error"></span>
+              <textarea class="l-main-tasks-header__input-task-text" placeholder="Enter a name for the task..." id="new-task-text"></textarea>
+            </div>
+            <button class="l-main-tasks-header__new-task-add-button" id="new-task-add">Add</button>
+          </div>
           <div class="l-main-tasks__container">
             <div class="l-main-tasks__info">
               <h2 class="l-main-tasks__info-heading">Tasks to be completed - </h2>
@@ -44,6 +72,30 @@
               <input type='button' disabled title="Delete" class="l-main-tasks__delete-button" id="delete-all-done">
             </div>
             <ul class="l-main-tasks__list" id="list-done"></ul>
+          </div>
+        </div>
+        <div class="l-main__calculator-wrapper">
+          <div class="l-main__calculator">
+            <p class="l-main__calculator-info">12 DIGITS</p>
+            <p class="l-main__calculator-output" id="output"></p>
+            <button class="l-main__calculator-btn l-main__calculator-btn_c" id="clean">C</button>
+            <div class="l-main__calculator-numbers">
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="seven">7</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="eight">8</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="nine">9</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_light" id="div">&#xF7;</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="four">4</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="five">5</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="six">6</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_light" id="mult">*</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="one">1</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="two">2</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="three">3</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_light" id="minus">-</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_dark" id="zero">0</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_light l-main__calculator-btn-eq" id="equally">=</button>
+              <button class="l-main__calculator-btn l-main__calculator-btn_light" id="plus">+</button>
+            </div>
           </div>
         </div>
       </div>

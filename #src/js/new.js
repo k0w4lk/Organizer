@@ -82,6 +82,7 @@ function createNewTaskTemplate(task, taskList) {
 
   const newTaskText = document.createElement('span');
   newTaskText.innerText = task.text;
+  newTaskText.classList.add('l-main-task__text');
 
   const newTaskEdit = document.createElement('button');
   newTaskEdit.classList.add('l-main-task__edit-button');
@@ -107,7 +108,6 @@ function resetCheckboxesStatuses() {
   chooseAllTBD.checked = false;
   chooseAllDone.checked = false;
   let checkboxes = document.querySelectorAll('.l-main-task__checkbox');
-  console.log(checkboxes);
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.nextSibling.classList.remove('l-main-task_checked');
@@ -426,11 +426,7 @@ newTaskText.addEventListener('keyup', (event) => {
   if (event.code === 'Enter') addNewTask(newTaskText, listTBD);
 });
 newTaskText.addEventListener('blur', clearNewTaskErrorText);
-newTaskText.addEventListener('input', () => {
-  if (newTaskText.value.length === 30) {
-    newTaskError.innerText = 'The maximum number of characters is 30';
-  } else clearNewTaskErrorText();
-});
+
 chooseAllTBD.addEventListener('change', () =>
   chooseAllTasks(dataTBD, chooseAllTBD, listTBD)
 );

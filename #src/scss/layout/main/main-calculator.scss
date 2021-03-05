@@ -1,0 +1,90 @@
+.l-main__calculator {
+  border: 1px solid #333;
+  width: 100%;
+  border-radius: 5px;
+  display: grid;
+  grid-template: 12px 50px 1fr / 1fr 50px;
+  grid-gap: 10px;
+  padding: 10px;
+  background-color: #eee;
+
+  &-info {
+    @include text(700, 10px, 12px, rgb(0, 0, 0));
+  }
+
+  &-output {
+    font-size: 40px;
+    line-height: 50px;
+    color: #333;
+    font-family: sans-serif;
+    width: 100%;
+    text-align: right;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    height: 50px;
+    border: 2px solid rgb(211, 210, 210);
+    border-radius: 5px;
+    font-size: 34px;
+    background-color: rgb(231, 231, 231);
+    margin: 0px auto 5px;
+  }
+
+  &-numbers {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    padding: 5px 0;
+    display: grid;
+    grid-row-gap: 5px;
+    justify-items: center;
+    grid-template: repeat(4, 1fr) / repeat(4, 1fr);
+  }
+
+  &-btn {
+    @include text(700, 18px, 18px, rgb(0, 0, 0));
+    width: 90%;
+    height: 50px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &-eq {
+      grid-column-start: 2;
+      grid-column-end: 4;
+      width: 95%;
+    }
+
+    &_dark {
+      background-color: gray;
+
+      &:active {
+        background-color: rgb(151, 146, 146);
+      }
+    }
+
+    &_light {
+      background-color: rgb(204, 204, 204);
+
+      &:active {
+        background-color: rgb(216, 216, 216);
+      }
+    }
+
+    &_c {
+      grid-column-start: 2;
+      grid-column-end: 3;
+      background-color: chocolate;
+
+      &:active {
+        background-color: rgb(223, 124, 54);
+      }
+    }
+
+    &:hover {
+      border-color: black;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

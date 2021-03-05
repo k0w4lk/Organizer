@@ -82,6 +82,7 @@ function createNewTaskTemplate(task, taskList) {
 
   const newTaskText = document.createElement('span');
   newTaskText.innerText = task.text;
+  newTaskText.classList.add('l-main-task__text');
 
   const newTaskEdit = document.createElement('button');
   newTaskEdit.classList.add('l-main-task__edit-button');
@@ -107,7 +108,6 @@ function resetCheckboxesStatuses() {
   chooseAllTBD.checked = false;
   chooseAllDone.checked = false;
   let checkboxes = document.querySelectorAll('.l-main-task__checkbox');
-  console.log(checkboxes);
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.nextSibling.classList.remove('l-main-task_checked');
@@ -426,11 +426,7 @@ newTaskText.addEventListener('keyup', (event) => {
   if (event.code === 'Enter') addNewTask(newTaskText, listTBD);
 });
 newTaskText.addEventListener('blur', clearNewTaskErrorText);
-newTaskText.addEventListener('input', () => {
-  if (newTaskText.value.length === 30) {
-    newTaskError.innerText = 'The maximum number of characters is 30';
-  } else clearNewTaskErrorText();
-});
+
 chooseAllTBD.addEventListener('change', () =>
   chooseAllTasks(dataTBD, chooseAllTBD, listTBD)
 );
@@ -452,4 +448,240 @@ deleteAllDone.addEventListener('click', deleteTasksDone);
 getTasksData();
 resetCheckboxesStatuses();
 renderTasks();
+;
+const currentDate = document.querySelector('#current-date');
+const qodAuthor = document.querySelector('#qod-author');
+const qodText = document.querySelector('#qod-text');
+const QUOTE_URL = 'https://quotes.rest/qod';
+
+let days = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednessday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+
+function getCurrentDate() {
+  let today = new Date();
+  return today;
+}
+
+function showCurrentDate() {
+  let today = getCurrentDate();
+  currentDate.innerText = `${today.toLocaleDateString()} (${
+    days[today.getDay()]
+  })`;
+}
+
+async function getQoD() {
+  let response = await fetch(QUOTE_URL);
+  let data = await response.json();
+  let quote = await data.contents.quotes[0].quote;
+  let author = await data.contents.quotes[0].author;
+  qodAuthor.innerText = `${author}:`;
+  qodText.innerText = `"${quote}"`;
+}
+
+getQoD();
+showCurrentDate();
+
+setInterval(() => {
+  getQoD();
+  showCurrentDate();
+}, 6e4);
+;
+const API_KEY = '58b6f7c78582bffab3936dac99c31b25';
+const IMG_URL = `http://openweathermap.org/img/wn/10d@2x.png`;
+const DEFAULT_CITY_NAME = 'Verkhnedvinsk';
+const weatherIcon = document.querySelector('#weather-icon');
+const weatherCity = document.querySelector('#weather-city');
+const weatherTemperature = document.querySelector('#weather-temperature');
+const feelsLikeText = document.querySelector('#feels-like');
+const changeCity = document.querySelector('#change-city');
+const changeCityButton = document.querySelector('#change-city-button');
+const weatherBlock = document.querySelector('#weather-block');
+const weatherPreload = document.querySelector('#weather-preload');
+const weatherLoad = document.querySelector('#weather-load');
+
+let savedCity = JSON.parse(localStorage.getItem('savedCity')) || {
+  city: undefined,
+};
+function saveCity(cityName) {
+  savedCity.city = cityName;
+  localStorage.setItem('savedCity', JSON.stringify(savedCity));
+}
+
+async function getWeatherData(key, cityName) {
+  try {
+    let response = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}&units=metric`
+    );
+    let data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+let temperature, feelsLike, icon, src, city;
+
+getWeatherData(
+  API_KEY,
+  localStorage.getItem('savedCity') ? savedCity.city : DEFAULT_CITY_NAME
+).then((res) => {
+  temperature = res.main.temp;
+  feelsLike = res.main.feels_like;
+  icon = res.weather[0].icon;
+  city = res.name;
+  src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
+  weatherCity.innerText = `${city}: `;
+  feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
+  weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
+  weatherIcon.src = src;
+  changeCity.innerHTML = `${city} isn't your city?`;
+  changeCityButton.innerText = 'Change.';
+  weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
+  weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+});
+
+const save = document.createElement('button');
+save.innerText = 'Save';
+const newCity = document.createElement('input');
+
+changeCityButton.addEventListener('click', () => {
+  weatherLoad.classList.add('l-main-header__weather-loaded_hidden');
+  weatherBlock.append(newCity, save);
+  save.style = `
+  margin-left: 4px;
+  `;
+  newCity.focus();
+  newCity.placeholder = 'Enter your city';
+});
+
+save.addEventListener('click', () => {
+  getWeatherData(API_KEY, newCity.value).then((res) => {
+    try {
+      temperature = res.main.temp;
+      feelsLike = res.main.feels_like;
+      icon = res.weather[0].icon;
+      city = res.name;
+      src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
+      weatherCity.innerText = `${city}: `;
+      feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
+      weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
+      weatherIcon.src = src;
+      changeCity.innerHTML = `${city} isn't your city?`;
+      changeCityButton.innerText = 'Change.';
+      weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
+      weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+      saveCity(newCity.value);
+      newCity.remove();
+      save.remove();
+    } catch {
+      newCity.value = '';
+      newCity.placeholder = 'City not found';
+      newCity.focus();
+      weatherBlock.append(errorText);
+    }
+  });
+});
+;
+let one = document.querySelector('#one'),
+  two = document.querySelector('#two'),
+  three = document.querySelector('#three'),
+  four = document.querySelector('#four'),
+  five = document.querySelector('#five'),
+  six = document.querySelector('#six'),
+  seven = document.querySelector('#seven'),
+  eight = document.querySelector('#eight'),
+  nine = document.querySelector('#nine'),
+  zero = document.querySelector('#zero'),
+  plus = document.querySelector('#plus'),
+  minus = document.querySelector('#minus'),
+  mult = document.querySelector('#mult'),
+  div = document.querySelector('#div'),
+  equally = document.querySelector('#equally'),
+  output = document.querySelector('#output'),
+  clean = document.querySelector('#clean'),
+  arr = [],
+  res = undefined,
+  isResOnScreen = false,
+  isResWithOperator = false;
+
+function pressNumber() {
+  if (arr.length < 12) {
+    if (isResOnScreen && !isResWithOperator) {
+      arr[0] = this.textContent;
+    } else {
+      arr.push(this.textContent);
+    }
+    output.innerHTML = arr.join('');
+    isResOnScreen = false;
+    isResWithOperator = false;
+  }
+}
+
+function pressOperator() {
+  if (arr[0] != undefined && arr.length < 12) {
+    if (
+      arr[arr.length - 1] == '+' ||
+      arr[arr.length - 1] == '-' ||
+      arr[arr.length - 1] == '*' ||
+      arr[arr.length - 1] == '÷'
+    ) {
+      arr[arr.length - 1] = this.textContent;
+      output.innerHTML = arr.join('');
+    } else {
+      arr.push(this.textContent);
+      output.innerHTML = arr.join('');
+    }
+    isResWithOperator = true;
+  }
+}
+
+function expressionResult() {
+  res = eval(arr.join('').replace('÷', '/'));
+  let resString = res.toString();
+  if (res != undefined) {
+    if (resString.length > 12) {
+      output.innerHTML = res.toFixed(3);
+    } else {
+      output.innerHTML = res;
+    }
+  }
+
+  arr.length = 1;
+  arr[0] = res;
+  isResOnScreen = true;
+}
+
+function cleanOutput() {
+  arr = [];
+  output.innerHTML = arr.join('');
+}
+
+one.addEventListener('click', pressNumber);
+two.addEventListener('click', pressNumber);
+three.addEventListener('click', pressNumber);
+four.addEventListener('click', pressNumber);
+five.addEventListener('click', pressNumber);
+six.addEventListener('click', pressNumber);
+seven.addEventListener('click', pressNumber);
+eight.addEventListener('click', pressNumber);
+nine.addEventListener('click', pressNumber);
+zero.addEventListener('click', pressNumber);
+
+plus.addEventListener('click', pressOperator);
+minus.addEventListener('click', pressOperator);
+mult.addEventListener('click', pressOperator);
+div.addEventListener('click', pressOperator);
+
+equally.addEventListener('click', expressionResult);
+
+clean.addEventListener('click', cleanOutput);
 ;
