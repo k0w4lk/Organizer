@@ -63,14 +63,17 @@ function addNewTask() {
   const toEdit = false;
 
   newTaskText.value = '';
-
+  resetCheckboxesStatuses();
+  massButtonActivity();
   saveTasksData({ taskText, taskID, isChecked, toEdit });
+
   renderTasks();
 }
 
 function createNewTaskTemplate(task, taskList) {
   const newTaskContainer = document.createElement('li');
   newTaskContainer.dataset.id = task.id;
+  newTaskContainer.classList.add('l-main-task__container');
 
   const newTaskCheckbox = document.createElement('input');
   newTaskCheckbox.setAttribute('type', 'checkbox');
@@ -81,8 +84,8 @@ function createNewTaskTemplate(task, taskList) {
   newTaskText.innerText = task.text;
 
   const newTaskEdit = document.createElement('button');
-  newTaskEdit.innerText = 'Edit';
-  newTaskEdit.disabled = true;
+  newTaskEdit.classList.add('l-main-task__edit-button');
+  newTaskEdit.dataset.edit = 'edit';
 
   newTaskContainer.append(newTaskCheckbox, newTaskText, newTaskEdit);
   taskList.append(newTaskContainer);
@@ -96,11 +99,19 @@ function renderTasks() {
   dataDone.forEach((task) => createNewTaskTemplate(task, listDone));
   updateTasksCounter(counterTBD, listTBD);
   updateTasksCounter(counterDone, listDone);
+  chooseAllDone.disabled = false;
+  chooseAllTBD.disabled = false;
 }
 
 function resetCheckboxesStatuses() {
   chooseAllTBD.checked = false;
   chooseAllDone.checked = false;
+  let checkboxes = document.querySelectorAll('.l-main-task__checkbox');
+  console.log(checkboxes);
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+    checkbox.nextSibling.classList.remove('l-main-task_checked');
+  });
   dataTBD.forEach((task) => {
     task.isChecked = false;
     task.toEdit = false;
@@ -122,15 +133,35 @@ function updateTasksCounter(counter, list) {
   massButtonsDisplay();
 }
 
-function chooseAllTasks(data, button) {
+function chooseAllTasks(data, button, list) {
   if (button.checked) {
     data.forEach((task) => (task.isChecked = true));
   } else {
     data.forEach((task) => (task.isChecked = false));
+    unlockCheckboxesDone();
   }
 
   saveTasksData();
   renderTasks();
+  if (button.checked) {
+    if (list.id === 'list-TBD') {
+      chooseAllDone.disabled = true;
+      lockCheckboxesDone();
+    }
+    if (list.id === 'list-done') {
+      chooseAllTBD.disabled = true;
+      lockCheckboxesTBD();
+    }
+  } else {
+    if (list.id === 'list-TBD') {
+      chooseAllDone.disabled = false;
+      unlockCheckboxesDone();
+    }
+    if (list.id === 'list-done') {
+      chooseAllTBD.disabled = false;
+      unlockCheckboxesTBD();
+    }
+  }
   massButtonActivity();
 }
 
@@ -163,20 +194,61 @@ function moveTasksToExecution() {
   renderTasks();
 }
 
-function chooseTask(event, data) {
+function chooseTask(event, data, list) {
   if (!event.target.classList.contains('l-main-task__checkbox')) return;
   data.forEach((task) => {
     if (task.id === event.target.parentNode.dataset.id) {
       if (event.target.checked) {
         task.isChecked = true;
+        event.target.nextSibling.classList.add('l-main-task_checked');
         saveTasksData();
       } else {
         task.isChecked = false;
+        event.target.nextSibling.classList.remove('l-main-task_checked');
         saveTasksData();
       }
     }
   });
+  if (data.filter((task) => task.isChecked).length) {
+    if (list.id === 'list-TBD') {
+      lockCheckboxesDone();
+      chooseAllDone.disabled = true;
+    }
+    if (list.id === 'list-done') {
+      lockCheckboxesTBD();
+      chooseAllTBD.disabled = true;
+    }
+  } else {
+    if (list.id === 'list-TBD') {
+      unlockCheckboxesDone();
+      chooseAllDone.disabled = false;
+    }
+    if (list.id === 'list-done') {
+      unlockCheckboxesTBD();
+      chooseAllTBD.disabled = false;
+    }
+  }
   massButtonActivity();
+}
+
+function lockCheckboxesDone() {
+  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
+}
+
+function unlockCheckboxesDone() {
+  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
+}
+
+function lockCheckboxesTBD() {
+  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
+}
+
+function unlockCheckboxesTBD() {
+  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
 }
 
 function massButtonActivity() {
@@ -226,6 +298,113 @@ function massButtonsDisplay() {
   }
 }
 
+function editTaskTBD(event) {
+  if (!event.target.classList.contains('l-main-task__edit-button')) return;
+  if (event.target.dataset.edit === 'edit') {
+    resetCheckboxesStatuses();
+    massButtonActivity();
+    event.target.classList.add('l-main-task__edit-button_save');
+    dataTBD.forEach((task) => {
+      if (event.target.parentNode.dataset.id === task.id) {
+        task.toEdit = true;
+      }
+    });
+    saveTasksData();
+
+    lockEditButtons(dataTBD);
+    let editInput = document.createElement('input');
+    editInput.style = 'width: 85%';
+    editInput.setAttribute('maxlength', '30');
+    editInput.value = event.target.previousSibling.innerText;
+    event.target.previousSibling.replaceWith(editInput);
+    editInput.focus();
+    event.target.dataset.edit = 'save';
+    lockCheckboxesDone();
+    lockCheckboxesTBD();
+    chooseAllDone.disabled = true;
+    chooseAllTBD.disabled = true;
+    return;
+  }
+  if (event.target.dataset.edit === 'save') {
+    let text = event.target.previousSibling.value;
+    let currentId = event.target.parentNode.dataset.id;
+    if (!text.length) {
+      dataTBD = dataTBD.filter((task) => task.id !== currentId);
+    } else {
+      dataTBD = dataTBD.map((task) => {
+        if (task.id === currentId) {
+          task.text = text;
+          return task;
+        } else {
+          return task;
+        }
+      });
+    }
+    saveTasksData();
+    renderTasks();
+  }
+}
+
+function editTaskDone(event) {
+  if (!event.target.classList.contains('l-main-task__edit-button')) return;
+  if (event.target.dataset.edit === 'edit') {
+    resetCheckboxesStatuses();
+    massButtonActivity();
+    event.target.classList.add('l-main-task__edit-button_save');
+    dataDone.forEach((task) => {
+      if (event.target.parentNode.dataset.id === task.id) {
+        task.toEdit = true;
+      }
+    });
+    saveTasksData();
+
+    lockEditButtons(dataDone);
+    let editInput = document.createElement('input');
+    editInput.style = 'width: 85%';
+    editInput.setAttribute('maxlength', '30');
+    editInput.value = event.target.previousSibling.innerText;
+    event.target.previousSibling.replaceWith(editInput);
+    editInput.focus();
+    event.target.dataset.edit = 'save';
+    lockCheckboxesDone();
+    lockCheckboxesTBD();
+    chooseAllDone.disabled = true;
+    chooseAllTBD.disabled = true;
+    return;
+  }
+  if (event.target.dataset.edit === 'save') {
+    let text = event.target.previousSibling.value;
+    let currentId = event.target.parentNode.dataset.id;
+    if (!text.length) {
+      dataDone = dataDone.filter((task) => task.id !== currentId);
+    } else {
+      dataDone = dataDone.map((task) => {
+        if (task.id === currentId) {
+          task.text = text;
+          return task;
+        } else {
+          return task;
+        }
+      });
+    }
+    saveTasksData();
+    renderTasks();
+  }
+}
+
+function lockEditButtons(data) {
+  let editButtons = document.querySelectorAll('.l-main-task__edit-button');
+  data.forEach((task) => {
+    if (task.toEdit) {
+      editButtons.forEach((button) => {
+        if (task.id !== button.parentNode.dataset.id) {
+          button.disabled = true;
+        }
+      });
+    }
+  });
+}
+
 function deleteTasksTBD() {
   dataTBD = dataTBD.filter((task) => (task.isChecked ? false : true));
   saveTasksData();
@@ -243,6 +422,9 @@ function deleteTasksDone() {
 }
 
 newTaskAdd.addEventListener('click', () => addNewTask(newTaskText, listTBD));
+newTaskText.addEventListener('keyup', (event) => {
+  if (event.code === 'Enter') addNewTask(newTaskText, listTBD);
+});
 newTaskText.addEventListener('blur', clearNewTaskErrorText);
 newTaskText.addEventListener('input', () => {
   if (newTaskText.value.length === 30) {
@@ -250,15 +432,20 @@ newTaskText.addEventListener('input', () => {
   } else clearNewTaskErrorText();
 });
 chooseAllTBD.addEventListener('change', () =>
-  chooseAllTasks(dataTBD, chooseAllTBD)
+  chooseAllTasks(dataTBD, chooseAllTBD, listTBD)
 );
 chooseAllDone.addEventListener('change', () =>
-  chooseAllTasks(dataDone, chooseAllDone)
+  chooseAllTasks(dataDone, chooseAllDone, listDone)
 );
 allToDone.addEventListener('click', moveTasksToDone);
 allToExecution.addEventListener('click', moveTasksToExecution);
-listTBD.addEventListener('change', () => chooseTask(event, dataTBD));
-listDone.addEventListener('change', () => chooseTask(event, dataDone));
+listTBD.addEventListener('change', () => chooseTask(event, dataTBD, listTBD));
+listDone.addEventListener('change', () =>
+  chooseTask(event, dataDone, listDone)
+);
+
+listTBD.addEventListener('click', () => editTaskTBD(event));
+listDone.addEventListener('click', () => editTaskDone(event));
 deleteAllTBD.addEventListener('click', deleteTasksTBD);
 deleteAllDone.addEventListener('click', deleteTasksDone);
 

@@ -431,6 +431,7 @@ table {
   background-size: 90%;
   -webkit-box-shadow: 1px 1px 1px black;
           box-shadow: 1px 1px 1px black;
+  margin-left: 6px;
 }
 
 .l-main-tasks__delete-button:active {
@@ -554,6 +555,10 @@ table {
 
 .l-main-task__edit-button[disabled]:hover {
   border: none;
+}
+
+.l-main-task__edit-button_save {
+  background-image: url("../../../images/save.svg");
 }
 
 .l-main-task_checked {
