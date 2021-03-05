@@ -8,6 +8,7 @@
 @import './layout/main/main-header.scss';
 @import './layout/main/main-tasks.scss';
 @import './layout/main/main-task.scss';
+@import './layout/main/main-calculator.scss';
 
 *,
 *::after,
@@ -16,5 +17,5 @@
 }
 
 body {
-  background: #cfc;
+  background: rgb(255, 255, 255);
 }

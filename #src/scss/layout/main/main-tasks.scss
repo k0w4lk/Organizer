@@ -1,14 +1,76 @@
 .l-main-tasks {
   display: flex;
   flex-direction: column;
-  background-color: #fef;
-  width: 100%;
+  background: #eee;
   padding: 10px;
+  border: 1px solid #333;
+  border-radius: 4px;
+
+  &-header {
+    &__add-task {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    &__input-container {
+      display: flex;
+      flex-direction: column;
+      width: 75%;
+      margin-top: 8px;
+    }
+    &__input-error {
+      @include text(400, 12px, 12px, rgb(230, 0, 0));
+      height: 12px;
+      margin-bottom: 2px;
+    }
+
+    &__input-task-text {
+      @include text(400, 16px, 16px, rgb(40, 40, 40));
+      @include scrollbar();
+      height: 42px;
+      width: 100%;
+      padding: 5px;
+      outline: none;
+      overflow-y: auto;
+      resize: none;
+      cursor: auto;
+
+      &:focus {
+        outline: 1px solid black;
+      }
+    }
+
+    &__new-task-add-button {
+      @include text(400, 16px, 16px, rgb(40, 40, 40));
+      height: 42px;
+      padding: 5px 15px;
+      border-radius: 5px;
+      outline: none;
+      cursor: pointer;
+      background: rgb(197, 197, 197);
+      border: 1px solid transparent;
+
+      &:hover {
+        border-color: black;
+        background: rgb(206, 205, 205);
+      }
+
+      &:focus {
+        border-color: black;
+      }
+    }
+  }
+
+  &__heading {
+    @include text(400, 26px, 26px, rgb(40, 40, 40));
+    text-align: center;
+  }
 
   &__container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-top: 20px;
   }
 
   &__info {
@@ -76,7 +138,7 @@
     list-style-type: none;
     overflow-y: auto;
     max-height: 144px;
-    max-width: 50%;
+    max-width: 100%;
     padding-right: 8px;
   }
 }
