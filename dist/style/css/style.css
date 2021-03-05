@@ -558,7 +558,42 @@ table {
 }
 
 .l-main-task__edit-button_save {
-  background-image: url("../../../images/save.svg");
+  height: 20px;
+  width: 20px;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  background: url("../../images/save.svg") center no-repeat, -webkit-gradient(linear, left top, right top, from(rgba(120, 120, 120, 0.1)), to(rgba(120, 120, 120, 0.1)));
+  background: url("../../images/save.svg") center no-repeat, -o-linear-gradient(left, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
+  background: url("../../images/save.svg") center no-repeat, linear-gradient(to right, rgba(120, 120, 120, 0.1) 0%, rgba(120, 120, 120, 0.1) 100%);
+  background-size: 90%;
+  -webkit-box-shadow: 1px 1px 1px black;
+          box-shadow: 1px 1px 1px black;
+}
+
+.l-main-task__edit-button_save:active {
+  background-size: 85%;
+  background-position: center;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.l-main-task__edit-button_save:hover {
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.l-main-task__edit-button_save[disabled] {
+  cursor: default;
+  background: url("../../images/save.svg") center no-repeat;
+  background-size: 80%;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border: none;
+}
+
+.l-main-task__edit-button_save[disabled]:hover {
+  border: none;
 }
 
 .l-main-task_checked {

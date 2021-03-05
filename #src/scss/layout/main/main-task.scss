@@ -35,7 +35,11 @@
     margin-left: auto;
 
     &_save {
-      background-image: url('../../../images/save.svg');
+      @include mass-action-button(
+        20px,
+        20px,
+        url('../../images/save.svg') center no-repeat
+      );
     }
   }
 
