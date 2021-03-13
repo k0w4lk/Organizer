@@ -1,93 +1,112 @@
-let one = document.querySelector('#one'),
-  two = document.querySelector('#two'),
-  three = document.querySelector('#three'),
-  four = document.querySelector('#four'),
-  five = document.querySelector('#five'),
-  six = document.querySelector('#six'),
-  seven = document.querySelector('#seven'),
-  eight = document.querySelector('#eight'),
-  nine = document.querySelector('#nine'),
-  zero = document.querySelector('#zero'),
-  plus = document.querySelector('#plus'),
-  minus = document.querySelector('#minus'),
-  mult = document.querySelector('#mult'),
-  div = document.querySelector('#div'),
-  equally = document.querySelector('#equally'),
-  output = document.querySelector('#output'),
+'use strict';
+
+const output = document.querySelector('#output'),
   clean = document.querySelector('#clean'),
-  arr = [],
-  res = undefined,
-  isResOnScreen = false,
-  isResWithOperator = false;
+  buttons = document.querySelector('#buttons');
 
-function pressNumber() {
-  if (arr.length < 12) {
-    if (isResOnScreen && !isResWithOperator) {
-      arr[0] = this.textContent;
-    } else {
-      arr.push(this.textContent);
-    }
-    output.innerHTML = arr.join('');
-    isResOnScreen = false;
-    isResWithOperator = false;
+let firstOperand = '',
+  secondOperand = '',
+  operator = null,
+  wasResult = false;
+
+function setOperand(operator, event) {
+  if (event.target.value === '0' && output.textContent === '0') return;
+  if (firstOperand === '0') firstOperand = '';
+  if (secondOperand === '0') secondOperand = '';
+  if (wasResult) {
+    clearData();
+    wasResult = false;
+  }
+  if (!operator) {
+    firstOperand.length < 8
+      ? (firstOperand += event.target.value)
+      : firstOperand;
+    output.innerHTML = firstOperand;
+  } else {
+    secondOperand.length < 8
+      ? (secondOperand += event.target.value)
+      : secondOperand;
+    output.innerHTML = secondOperand;
   }
 }
 
-function pressOperator() {
-  if (arr[0] != undefined && arr.length < 12) {
-    if (
-      arr[arr.length - 1] == '+' ||
-      arr[arr.length - 1] == '-' ||
-      arr[arr.length - 1] == '*' ||
-      arr[arr.length - 1] == '÷'
-    ) {
-      arr[arr.length - 1] = this.textContent;
-      output.innerHTML = arr.join('');
-    } else {
-      arr.push(this.textContent);
-      output.innerHTML = arr.join('');
-    }
-    isResWithOperator = true;
+function clearData() {
+  firstOperand = '';
+  secondOperand = '';
+  operator = null;
+  output.innerHTML = '';
+}
+
+function getResult(operand1, operand2, operator) {
+  let res;
+  switch (operator) {
+    case '+':
+      res = +operand1 + +operand2;
+      return res;
+    case '-':
+      res = +operand1 - +operand2;
+      return res;
+    case '*':
+      res = +operand1 * +operand2;
+      return res;
+    case '/':
+      res = +operand1 / +operand2;
+      return res;
+
+    default:
+      break;
   }
 }
 
-function expressionResult() {
-  res = eval(arr.join('').replace('÷', '/'));
-  let resString = res.toString();
-  if (res != undefined) {
-    if (resString.length > 12) {
-      output.innerHTML = res.toFixed(3);
+function setOperator(event) {
+  if (secondOperand !== '') {
+    firstOperand = getResult(firstOperand, secondOperand, operator);
+    secondOperand = '';
+    if (('' + firstOperand).length > 8) {
+      output.innerHTML = firstOperand.toExponential(2);
     } else {
-      output.innerHTML = res;
+      output.innerHTML = firstOperand;
     }
+    operator = event.target.value;
   }
-
-  arr.length = 1;
-  arr[0] = res;
-  isResOnScreen = true;
+  wasResult = false;
+  operator = event.target.value;
 }
 
-function cleanOutput() {
-  arr = [];
-  output.innerHTML = arr.join('');
+function showResult() {
+  let result = getResult(firstOperand, secondOperand, operator);
+  if (('' + result).length > 8) {
+    output.innerHTML = result.toExponential(2);
+  } else {
+    output.innerHTML = result;
+  }
 }
 
-one.addEventListener('click', pressNumber);
-two.addEventListener('click', pressNumber);
-three.addEventListener('click', pressNumber);
-four.addEventListener('click', pressNumber);
-five.addEventListener('click', pressNumber);
-six.addEventListener('click', pressNumber);
-seven.addEventListener('click', pressNumber);
-eight.addEventListener('click', pressNumber);
-nine.addEventListener('click', pressNumber);
-zero.addEventListener('click', pressNumber);
+buttons.addEventListener('click', (event) => {
+  if (event.target.id === 'buttons') return;
+  if (isFinite(+event.target.value)) {
+    setOperand(operator, event);
+  }
+  if (
+    isNaN(+event.target.value) &&
+    event.target.value !== '=' &&
+    firstOperand !== ''
+  ) {
+    setOperator(event);
+  }
+  if (
+    event.target.value === '=' &&
+    firstOperand !== '' &&
+    secondOperand !== ''
+  ) {
+    showResult();
+    firstOperand = output.textContent;
+    operator = null;
+    secondOperand = '';
+    wasResult = true;
+  }
+});
 
-plus.addEventListener('click', pressOperator);
-minus.addEventListener('click', pressOperator);
-mult.addEventListener('click', pressOperator);
-div.addEventListener('click', pressOperator);
-
-equally.addEventListener('click', expressionResult);
-
-clean.addEventListener('click', cleanOutput);
+clean.addEventListener('click', () => {
+  clearData();
+});

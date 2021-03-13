@@ -1,4 +1,4 @@
-const API_KEY = '58b6f7c78582bffab3936dac99c31b25';
+const API_KEY = 'fc522175fa7782718e0d7c3b81e2f841';
 const IMG_URL = `http://openweathermap.org/img/wn/10d@2x.png`;
 const DEFAULT_CITY_NAME = 'Verkhnedvinsk';
 const weatherIcon = document.querySelector('#weather-icon');

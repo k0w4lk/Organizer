@@ -5,6 +5,8 @@
   padding: 10px;
   border: 1px solid #333;
   border-radius: 4px;
+  grid-row-start: 2;
+  grid-row-end: 4;
 
   &-header {
     &__add-task {
@@ -28,9 +30,9 @@
     &__input-task-text {
       @include text(400, 16px, 16px, rgb(40, 40, 40));
       @include scrollbar();
-      height: 42px;
+      height: 32px;
       width: 100%;
-      padding: 5px;
+      padding: 2px;
       outline: none;
       overflow-y: auto;
       resize: none;
@@ -43,7 +45,7 @@
 
     &__new-task-add-button {
       @include text(400, 16px, 16px, rgb(40, 40, 40));
-      height: 42px;
+      height: 32px;
       padding: 5px 15px;
       border-radius: 5px;
       outline: none;
@@ -70,7 +72,7 @@
   &__container {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 16px;
   }
 
   &__info {
@@ -78,18 +80,18 @@
     margin-bottom: 8px;
 
     &-heading {
-      @include text(400, 22px, 26px, rgb(40, 40, 40));
+      @include text(400, 22px, 22px, rgb(40, 40, 40));
     }
 
     &-counter {
-      @include text(500, 24px, 26px, rgb(40, 40, 40));
+      @include text(500, 22px, 22px, rgb(40, 40, 40));
 
       margin-left: 6px;
     }
   }
 
   &__mass-action-buttons {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     display: flex;
     align-items: center;
     padding-left: 2px;
@@ -137,7 +139,7 @@
 
     list-style-type: none;
     overflow-y: auto;
-    max-height: 144px;
+    max-height: 112px;
     max-width: 100%;
     padding-right: 8px;
   }

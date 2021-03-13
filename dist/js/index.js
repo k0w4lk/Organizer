@@ -314,7 +314,7 @@ function editTaskTBD(event) {
     lockEditButtons(dataTBD);
     let editInput = document.createElement('input');
     editInput.style = 'width: 85%';
-    editInput.setAttribute('maxlength', '30');
+    editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
     event.target.previousSibling.replaceWith(editInput);
     editInput.focus();
@@ -361,7 +361,7 @@ function editTaskDone(event) {
     lockEditButtons(dataDone);
     let editInput = document.createElement('input');
     editInput.style = 'width: 85%';
-    editInput.setAttribute('maxlength', '30');
+    editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
     event.target.previousSibling.replaceWith(editInput);
     editInput.focus();
@@ -493,7 +493,7 @@ setInterval(() => {
   showCurrentDate();
 }, 6e4);
 ;
-const API_KEY = '58b6f7c78582bffab3936dac99c31b25';
+const API_KEY = 'fc522175fa7782718e0d7c3b81e2f841';
 const IMG_URL = `http://openweathermap.org/img/wn/10d@2x.png`;
 const DEFAULT_CITY_NAME = 'Verkhnedvinsk';
 const weatherIcon = document.querySelector('#weather-icon');
@@ -591,97 +591,236 @@ save.addEventListener('click', () => {
   });
 });
 ;
-let one = document.querySelector('#one'),
-  two = document.querySelector('#two'),
-  three = document.querySelector('#three'),
-  four = document.querySelector('#four'),
-  five = document.querySelector('#five'),
-  six = document.querySelector('#six'),
-  seven = document.querySelector('#seven'),
-  eight = document.querySelector('#eight'),
-  nine = document.querySelector('#nine'),
-  zero = document.querySelector('#zero'),
-  plus = document.querySelector('#plus'),
-  minus = document.querySelector('#minus'),
-  mult = document.querySelector('#mult'),
-  div = document.querySelector('#div'),
-  equally = document.querySelector('#equally'),
-  output = document.querySelector('#output'),
+'use strict';
+
+const output = document.querySelector('#output'),
   clean = document.querySelector('#clean'),
-  arr = [],
-  res = undefined,
-  isResOnScreen = false,
-  isResWithOperator = false;
+  buttons = document.querySelector('#buttons');
 
-function pressNumber() {
-  if (arr.length < 12) {
-    if (isResOnScreen && !isResWithOperator) {
-      arr[0] = this.textContent;
-    } else {
-      arr.push(this.textContent);
-    }
-    output.innerHTML = arr.join('');
-    isResOnScreen = false;
-    isResWithOperator = false;
+let firstOperand = '',
+  secondOperand = '',
+  operator = null,
+  wasResult = false;
+
+function setOperand(operator, event) {
+  if (event.target.value === '0' && output.textContent === '0') return;
+  if (firstOperand === '0') firstOperand = '';
+  if (secondOperand === '0') secondOperand = '';
+  if (wasResult) {
+    clearData();
+    wasResult = false;
+  }
+  if (!operator) {
+    firstOperand.length < 8
+      ? (firstOperand += event.target.value)
+      : firstOperand;
+    output.innerHTML = firstOperand;
+  } else {
+    secondOperand.length < 8
+      ? (secondOperand += event.target.value)
+      : secondOperand;
+    output.innerHTML = secondOperand;
   }
 }
 
-function pressOperator() {
-  if (arr[0] != undefined && arr.length < 12) {
+function clearData() {
+  firstOperand = '';
+  secondOperand = '';
+  operator = null;
+  output.innerHTML = '';
+}
+
+function getResult(operand1, operand2, operator) {
+  let res;
+  switch (operator) {
+    case '+':
+      res = +operand1 + +operand2;
+      return res;
+    case '-':
+      res = +operand1 - +operand2;
+      return res;
+    case '*':
+      res = +operand1 * +operand2;
+      return res;
+    case '/':
+      res = +operand1 / +operand2;
+      return res;
+
+    default:
+      break;
+  }
+}
+
+function setOperator(event) {
+  if (secondOperand !== '') {
+    firstOperand = getResult(firstOperand, secondOperand, operator);
+    secondOperand = '';
+    if (('' + firstOperand).length > 8) {
+      output.innerHTML = firstOperand.toExponential(2);
+    } else {
+      output.innerHTML = firstOperand;
+    }
+    operator = event.target.value;
+  }
+  wasResult = false;
+  operator = event.target.value;
+}
+
+function showResult() {
+  let result = getResult(firstOperand, secondOperand, operator);
+  if (('' + result).length > 8) {
+    output.innerHTML = result.toExponential(2);
+  } else {
+    output.innerHTML = result;
+  }
+}
+
+buttons.addEventListener('click', (event) => {
+  if (event.target.id === 'buttons') return;
+  if (isFinite(+event.target.value)) {
+    setOperand(operator, event);
+  }
+  if (
+    isNaN(+event.target.value) &&
+    event.target.value !== '=' &&
+    firstOperand !== ''
+  ) {
+    setOperator(event);
+  }
+  if (
+    event.target.value === '=' &&
+    firstOperand !== '' &&
+    secondOperand !== ''
+  ) {
+    showResult();
+    firstOperand = output.textContent;
+    operator = null;
+    secondOperand = '';
+    wasResult = true;
+  }
+});
+
+clean.addEventListener('click', () => {
+  clearData();
+});
+;
+const prevMonthButton = document.querySelector('#prev-month');
+const nextMonthButton = document.querySelector('#next-month');
+const daysTemplate = document.querySelector('#curr-month');
+const calendarTemplate = document.querySelector('#calendar');
+
+const currentMonth = new Date().getMonth();
+const currentYear = new Date().getFullYear();
+
+let months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+let holidays = [
+  { month: 0, day: 1 },
+  { month: 0, day: 7 },
+  { month: 2, day: 8 },
+  { month: 4, day: 1 },
+  { month: 4, day: 9 },
+  { month: 6, day: 3 },
+  { month: 10, day: 7 },
+  { month: 11, day: 25 },
+];
+
+function currentMonthDays(month, year) {
+  let days = new Date(new Date(year, month + 1).setDate(0)).getDate();
+  return days;
+}
+
+function showCurrentMonthDays(month, year) {
+  let template = document.createElement('div');
+  template.classList.add('l-main__calendar-dates');
+  let firstDay = new Date(year, month).getDay();
+  if (firstDay >= 2) {
+    for (let i = 2; i < firstDay; i++) {
+      let div = document.createElement('div');
+      template.append(div);
+    }
+  }
+  if (firstDay === 0) {
+    for (let i = 0; i < 6; i++) {
+      let div = document.createElement('div');
+      template.append(div);
+    }
+  }
+  createTemplate: for (let i = 1; i <= currentMonthDays(month, year); i++) {
+    for (let item of holidays) {
+      if (month === item.month && i === item.day) {
+        let div = document.createElement('div');
+        div.classList.add(
+          'l-main__calendar-dates-item',
+          'l-main__calendar-dates-item_red'
+        );
+        if (
+          month === currentMonth &&
+          year === currentYear &&
+          i === new Date().getDate()
+        ) {
+          div.classList.add('l-main__calendar-item_today');
+        }
+        div.innerText = i;
+        template.append(div);
+        continue createTemplate;
+      }
+    }
     if (
-      arr[arr.length - 1] == '+' ||
-      arr[arr.length - 1] == '-' ||
-      arr[arr.length - 1] == '*' ||
-      arr[arr.length - 1] == '÷'
+      month === currentMonth &&
+      year === currentYear &&
+      i === new Date().getDate()
     ) {
-      arr[arr.length - 1] = this.textContent;
-      output.innerHTML = arr.join('');
+      let div = document.createElement('div');
+      div.classList.add(
+        'l-main__calendar-dates-item',
+        'l-main__calendar-dates-item_today'
+      );
+      div.innerText = i;
+      template.append(div);
     } else {
-      arr.push(this.textContent);
-      output.innerHTML = arr.join('');
-    }
-    isResWithOperator = true;
-  }
-}
-
-function expressionResult() {
-  res = eval(arr.join('').replace('÷', '/'));
-  let resString = res.toString();
-  if (res != undefined) {
-    if (resString.length > 12) {
-      output.innerHTML = res.toFixed(3);
-    } else {
-      output.innerHTML = res;
+      let div = document.createElement('div');
+      div.classList.add('l-main__calendar-dates-item');
+      div.innerText = i;
+      template.append(div);
     }
   }
-
-  arr.length = 1;
-  arr[0] = res;
-  isResOnScreen = true;
+  calendar.innerHTML = '';
+  calendar.append(template);
 }
 
-function cleanOutput() {
-  arr = [];
-  output.innerHTML = arr.join('');
+let cbMonth = currentMonth;
+let cbYear = currentYear;
+
+prevMonthButton.addEventListener('click', () => {
+  let month = cbMonth ? --cbMonth : ((cbMonth = 11), 11);
+  let year = cbMonth === 11 ? --cbYear : cbYear;
+  render(month, year);
+});
+
+nextMonthButton.addEventListener('click', () => {
+  let year = cbMonth !== 11 ? cbYear : ++cbYear;
+  let month = cbMonth !== 11 ? ++cbMonth : ((cbMonth = 0), 0);
+  render(month, year);
+});
+
+function render(month, year) {
+  daysTemplate.innerHTML = `${months[month]} ${year}`;
+  showCurrentMonthDays(month, year);
 }
 
-one.addEventListener('click', pressNumber);
-two.addEventListener('click', pressNumber);
-three.addEventListener('click', pressNumber);
-four.addEventListener('click', pressNumber);
-five.addEventListener('click', pressNumber);
-six.addEventListener('click', pressNumber);
-seven.addEventListener('click', pressNumber);
-eight.addEventListener('click', pressNumber);
-nine.addEventListener('click', pressNumber);
-zero.addEventListener('click', pressNumber);
-
-plus.addEventListener('click', pressOperator);
-minus.addEventListener('click', pressOperator);
-mult.addEventListener('click', pressOperator);
-div.addEventListener('click', pressOperator);
-
-equally.addEventListener('click', expressionResult);
-
-clean.addEventListener('click', cleanOutput);
+render(currentMonth, currentYear);
 ;
