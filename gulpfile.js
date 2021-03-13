@@ -1,4 +1,4 @@
-let projectFolder = 'dist';
+let projectFolder = 'docs';
 let sourceFolder = '#src';
 
 let path = {
