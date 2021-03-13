@@ -4,6 +4,11 @@
     padding: 10px;
     border: 1px solid #333;
     border-radius: 4px;
+
+    @media (max-width: 767px) {
+      grid-row-start: 3;
+      grid-row-end: 4;
+    }
   }
 
   &__calendar-controls {

@@ -8,6 +8,10 @@
   grid-row-start: 2;
   grid-row-end: 4;
 
+  @media (max-width: 767px) {
+    grid-row-end: 3;
+  }
+
   &-header {
     &__add-task {
       display: flex;

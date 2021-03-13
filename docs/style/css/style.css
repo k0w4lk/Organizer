@@ -162,7 +162,7 @@ table {
 .l-main__container {
   display: grid;
   grid-column-gap: 10px;
-  grid-template: minmax(130px, 1fr) 226px 260px/498px 250px;
+  grid-template: minmax(130px, 1fr) 226px 260px/518px 250px;
   max-width: 768px;
   width: 100%;
   grid-row-gap: 5px;
@@ -1056,4 +1056,56 @@ table {
 
 body {
   background: white;
+}
+
+@media (max-width: 767px) {
+  .l-main__container {
+    grid-template: minmax(130px, 1fr) -webkit-max-content max-content/370px;
+    grid-template: minmax(130px, 1fr) max-content max-content/370px;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+
+  .l-main-header__heading {
+    margin-top: 20px;
+  }
+
+  .l-main-header__info {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+
+  .l-main-header__quote-of-day {
+    max-width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .l-main-header__weather {
+    width: 100%;
+  }
+
+  .l-main-header {
+    grid-column-end: 2;
+  }
+
+  .l-main-tasks {
+    grid-row-end: 3;
+  }
+
+  .l-main__calendar {
+    grid-row-start: 3;
+    grid-row-end: 4;
+  }
+
+  .l-main__calculator {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 5;
+  }
 }

@@ -87,4 +87,10 @@
       outline: none;
     }
   }
+
+  @media (max-width: 767px) {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 5;
+  }
 }
