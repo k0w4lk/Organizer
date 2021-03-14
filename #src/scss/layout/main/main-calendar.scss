@@ -24,6 +24,11 @@
       height: 16px;
       outline: none;
 
+      @media (max-width: 767px) {
+        top: 10px;
+        left: 25%;
+      }
+
       &:active {
         outline: 1px solid gray;
       }

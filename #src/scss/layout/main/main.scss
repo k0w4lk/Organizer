@@ -13,7 +13,7 @@
     padding: 5px 0;
 
     @media (max-width: 767px) {
-      grid-template: minmax(130px, 1fr) 500px max-content / 100vw;
+      grid-template: minmax(130px, 1fr) max-content max-content / 100vw;
       justify-content: center;
       padding: 0;
       grid-gap: 0;
