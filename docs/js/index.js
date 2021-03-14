@@ -801,7 +801,7 @@ function showCurrentMonthDays(month, year) {
   template.classList.add('l-main__calendar-dates');
   let firstDay = new Date(year, month).getDay();
   if (firstDay >= 2) {
-    for (let i = 2; i < firstDay; i++) {
+    for (let i = 1; i < firstDay; i++) {
       let div = document.createElement('div');
       template.append(div);
     }
