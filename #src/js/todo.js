@@ -40,6 +40,7 @@ function saveTasksData(data) {
           id: data.taskID,
           isChecked: data.isChecked,
           toEdit: data.toEdit,
+          isDone: data.isDone,
         },
       ])
     );
@@ -50,22 +51,25 @@ function saveTasksData(data) {
 }
 
 function addNewTask() {
-  const taskText = newTaskText.value;
+  const taskText = newTaskText.value.trim();
   newTaskText.focus();
 
   if (!taskText) {
     newTaskError.innerText = 'You have not entered a task name';
+    newTaskText.value = '';
     return;
   }
 
   const taskID = Math.random().toString(32).slice(3);
   const isChecked = false;
   const toEdit = false;
+  const isDone = false;
 
   newTaskText.value = '';
   resetCheckboxesStatuses();
   massButtonActivity();
-  saveTasksData({ taskText, taskID, isChecked, toEdit });
+  clearNewTaskErrorText();
+  saveTasksData({ taskText, taskID, isChecked, toEdit, isDone });
 
   renderTasks();
 }
@@ -83,6 +87,11 @@ function createNewTaskTemplate(task, taskList) {
   const newTaskText = document.createElement('span');
   newTaskText.innerText = task.text;
   newTaskText.classList.add('l-main-task__text');
+  if (task.isDone) {
+    newTaskText.classList.add('l-main-task__text_done');
+  } else {
+    newTaskText.classList.remove('l-main-task__text_done');
+  }
 
   const newTaskEdit = document.createElement('button');
   newTaskEdit.classList.add('l-main-task__edit-button');
@@ -168,6 +177,7 @@ function chooseAllTasks(data, button, list) {
 function moveTasksToDone() {
   dataTBD = dataTBD.filter((task) => {
     if (task.isChecked) {
+      task.isDone = true;
       dataDone.push(task);
       return false;
     } else {
@@ -183,6 +193,7 @@ function moveTasksToDone() {
 function moveTasksToExecution() {
   dataDone = dataDone.filter((task) => {
     if (task.isChecked) {
+      task.isDone = false;
       dataTBD.push(task);
       return false;
     } else {
@@ -298,6 +309,17 @@ function massButtonsDisplay() {
   }
 }
 
+function addNewTaskStatus(isLocked) {
+  newTaskText.disabled = isLocked;
+  newTaskAdd.disabled = isLocked;
+  if (isLocked)
+    newTaskAdd.classList.add('l-main-tasks-header__new-task-add-button_locked');
+  else
+    newTaskAdd.classList.remove(
+      'l-main-tasks-header__new-task-add-button_locked'
+    );
+}
+
 function editTaskTBD(event) {
   if (!event.target.classList.contains('l-main-task__edit-button')) return;
   if (event.target.dataset.edit === 'edit') {
@@ -312,6 +334,7 @@ function editTaskTBD(event) {
     saveTasksData();
 
     lockEditButtons(dataTBD);
+    addNewTaskStatus(true);
     let editInput = document.createElement('input');
     editInput.style = 'width: 85%';
     editInput.setAttribute('maxlength', '100');
@@ -341,6 +364,7 @@ function editTaskTBD(event) {
       });
     }
     saveTasksData();
+    addNewTaskStatus(false);
     renderTasks();
   }
 }
@@ -357,6 +381,7 @@ function editTaskDone(event) {
       }
     });
     saveTasksData();
+    addNewTaskStatus(true);
 
     lockEditButtons(dataDone);
     let editInput = document.createElement('input');
@@ -388,6 +413,7 @@ function editTaskDone(event) {
       });
     }
     saveTasksData();
+    addNewTaskStatus(false);
     renderTasks();
   }
 }
@@ -422,10 +448,25 @@ function deleteTasksDone() {
 }
 
 newTaskAdd.addEventListener('click', () => addNewTask(newTaskText, listTBD));
-newTaskText.addEventListener('keyup', (event) => {
-  if (event.code === 'Enter') addNewTask(newTaskText, listTBD);
+newTaskText.addEventListener('keypress', (event) => {
+  if (event.code === 'Enter') {
+    event.preventDefault();
+    addNewTask(newTaskText, listTBD);
+  }
 });
 newTaskText.addEventListener('blur', clearNewTaskErrorText);
+newTaskText.addEventListener('keydown', () => {
+  if (newTaskText.value.length === 100) {
+    newTaskError.innerText = 'The maximum number of characters is 100';
+  }
+});
+newTaskText.addEventListener('input', () => {
+  if (newTaskText.value.length === 100) {
+    newTaskError.innerText = 'The maximum number of characters is 100';
+  } else {
+    clearNewTaskErrorText();
+  }
+});
 
 chooseAllTBD.addEventListener('change', () =>
   chooseAllTasks(dataTBD, chooseAllTBD, listTBD)

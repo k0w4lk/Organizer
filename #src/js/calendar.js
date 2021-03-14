@@ -1,5 +1,6 @@
 const prevMonthButton = document.querySelector('#prev-month');
 const nextMonthButton = document.querySelector('#next-month');
+const goToToday = document.querySelector('#go-to-today');
 const daysTemplate = document.querySelector('#curr-month');
 const calendarTemplate = document.querySelector('#calendar');
 
@@ -115,5 +116,9 @@ function render(month, year) {
   daysTemplate.innerHTML = `${months[month]} ${year}`;
   showCurrentMonthDays(month, year);
 }
+
+goToToday.addEventListener('click', () => {
+  render(currentMonth, currentYear);
+});
 
 render(currentMonth, currentYear);

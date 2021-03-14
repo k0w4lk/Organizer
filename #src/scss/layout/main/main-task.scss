@@ -15,6 +15,11 @@
 
     width: 85%;
     word-wrap: break-word;
+
+    &_done {
+      color: #777;
+      text-decoration: line-through;
+    }
   }
 
   &__edit-input {

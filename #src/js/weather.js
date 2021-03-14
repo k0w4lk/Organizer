@@ -10,6 +10,7 @@ const changeCityButton = document.querySelector('#change-city-button');
 const weatherBlock = document.querySelector('#weather-block');
 const weatherPreload = document.querySelector('#weather-preload');
 const weatherLoad = document.querySelector('#weather-load');
+const refreshWeather = document.querySelector('#weather-refresh');
 
 let savedCity = JSON.parse(localStorage.getItem('savedCity')) || {
   city: undefined,
@@ -33,25 +34,27 @@ async function getWeatherData(key, cityName) {
 
 let temperature, feelsLike, icon, src, city;
 
-getWeatherData(
-  API_KEY,
-  localStorage.getItem('savedCity') ? savedCity.city : DEFAULT_CITY_NAME
-).then((res) => {
-  temperature = res.main.temp;
-  feelsLike = res.main.feels_like;
-  icon = res.weather[0].icon;
-  city = res.name;
-  src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+function renderWeather() {
+  getWeatherData(
+    API_KEY,
+    localStorage.getItem('savedCity') ? savedCity.city : DEFAULT_CITY_NAME
+  ).then((res) => {
+    temperature = res.main.temp;
+    feelsLike = res.main.feels_like;
+    icon = res.weather[0].icon;
+    city = res.name;
+    src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
 
-  weatherCity.innerText = `${city}: `;
-  feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
-  weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
-  weatherIcon.src = src;
-  changeCity.innerHTML = `${city} isn't your city?`;
-  changeCityButton.innerText = 'Change.';
-  weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
-  weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
-});
+    weatherCity.innerText = `${city}: `;
+    feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
+    weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
+    weatherIcon.src = src;
+    changeCity.innerHTML = `${city} isn't your city?`;
+    changeCityButton.innerText = 'Change.';
+    weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
+    weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+  });
+}
 
 const save = document.createElement('button');
 save.innerText = 'Save';
@@ -95,3 +98,11 @@ save.addEventListener('click', () => {
     }
   });
 });
+
+refreshWeather.addEventListener('click', () => {
+  weatherPreload.classList.remove('l-main-header__weather-preloader_hidden');
+  weatherLoad.classList.add('l-main-header__weather-loaded_hidden');
+  renderWeather();
+});
+
+renderWeather();

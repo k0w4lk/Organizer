@@ -162,7 +162,8 @@ table {
 .l-main__container {
   display: grid;
   grid-column-gap: 10px;
-  grid-template: minmax(130px, 1fr) 226px 260px/518px 250px;
+  grid-template: minmax(130px, 1fr) -webkit-max-content 260px/518px 250px;
+  grid-template: minmax(130px, 1fr) max-content 260px/518px 250px;
   max-width: 768px;
   width: 100%;
   grid-row-gap: 5px;
@@ -280,6 +281,10 @@ table {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  position: relative;
 }
 
 .l-main-header__weather-loaded_hidden {
@@ -341,10 +346,6 @@ table {
   }
 }
 
-.l-main-header__weather-text {
-  margin-top: 10px;
-}
-
 .l-main-header__weather-city {
   font-weight: 700;
   font-size: 14px;
@@ -379,9 +380,20 @@ table {
   width: 80px;
   -o-object-fit: cover;
      object-fit: cover;
-  margin-left: 5px;
+  margin: 25px 0 0 5px;
   background: #9c9c9c;
   border-radius: 5px;
+}
+
+.l-main-header__weather-refresh {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border: none;
+  cursor: pointer;
+  background: url(../../images/refresh.svg) no-repeat center;
 }
 
 .l-main-header__weather-change-city {
@@ -506,11 +518,21 @@ table {
 
 .l-main-tasks-header__new-task-add-button:hover {
   border-color: black;
-  background: #cecdcd;
+  background: #cdcdcd;
 }
 
 .l-main-tasks-header__new-task-add-button:focus {
   border-color: black;
+}
+
+.l-main-tasks-header__new-task-add-button_locked {
+  cursor: default;
+  background-color: #e0e0e0;
+}
+
+.l-main-tasks-header__new-task-add-button_locked:hover {
+  background-color: #e0e0e0;
+  border-color: transparent;
 }
 
 .l-main-tasks__heading {
@@ -747,6 +769,11 @@ table {
   word-wrap: break-word;
 }
 
+.l-main-task__text_done {
+  color: #777;
+  text-decoration: line-through;
+}
+
 .l-main-task__edit-input {
   font-weight: 400;
   font-size: 14px;
@@ -846,6 +873,22 @@ table {
   padding: 10px;
   border: 1px solid #333;
   border-radius: 4px;
+  position: relative;
+}
+
+.l-main__calendar-today {
+  background: url("../../images/calendar.svg") no-repeat center;
+  position: absolute;
+  cursor: pointer;
+  top: 5px;
+  border: none;
+  width: 16px;
+  height: 16px;
+  outline: none;
+}
+
+.l-main__calendar-today:active {
+  outline: 1px solid gray;
 }
 
 .l-main__calendar-controls {
@@ -861,14 +904,41 @@ table {
 
 .l-main__calendar-change-month {
   height: 20px;
+  outline: none;
+}
+
+.l-main__calendar-change-month:active {
+  outline: 1px solid black;
 }
 
 .l-main__calendar-change-month:first-child {
-  margin-right: auto;
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  height: 60px;
+  width: 16px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  background: url(../../images/arrow-left.png) no-repeat center;
+  background-size: 100%;
+  padding: 0;
+  border: none;
 }
 
 .l-main__calendar-change-month:last-child {
-  margin-left: auto;
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+  height: 60px;
+  width: 16px;
+  background: url(../../images/arrow-right.png) no-repeat center;
+  padding: 0;
+  border: none;
+  background-size: 100%;
 }
 
 .l-main__calendar-current-month {
@@ -884,8 +954,8 @@ table {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  grid-template-columns: repeat(7, 34px);
-  grid-template-rows: 26px;
+  grid-template-columns: repeat(7, 28px);
+  grid-template-rows: 28px;
   margin-bottom: 4px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -897,7 +967,7 @@ table {
   font-weight: 400;
   font-size: 12px;
   font-family: 'Roboto', serif;
-  line-height: 22px;
+  line-height: 28px;
   color: #333333;
   width: 100%;
   height: 22px;
@@ -912,15 +982,15 @@ table {
   font-weight: 400;
   font-size: 16px;
   font-family: 'Roboto', serif;
-  line-height: 22px;
+  line-height: 28px;
   color: #333333;
   display: grid;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  grid-template-columns: repeat(7, 34px);
-  grid-template-rows: 22px;
-  grid-auto-rows: 22px;
+  grid-template-columns: repeat(7, 28px);
+  grid-template-rows: 28px;
+  grid-auto-rows: 28px;
   grid-row-gap: 4px;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -929,8 +999,8 @@ table {
 }
 
 .l-main__calendar-dates-item {
-  width: 22px;
-  height: 26px;
+  width: 100%;
+  height: 100%;
   text-align: center;
   line-height: 22px;
   padding: 2px;
@@ -938,6 +1008,10 @@ table {
 
 .l-main__calendar-dates-item_red {
   color: red;
+}
+
+.l-main__calendar-dates-item_today {
+  border: 1px solid red;
 }
 
 .l-main__calculator {
@@ -958,7 +1032,7 @@ table {
 
 .l-main__calculator-info {
   font-weight: 700;
-  font-size: 10px;
+  font-size: 12px;
   font-family: 'Roboto', serif;
   line-height: 12px;
   color: black;
@@ -1060,11 +1134,13 @@ body {
 
 @media (max-width: 767px) {
   .l-main__container {
-    grid-template: minmax(130px, 1fr) -webkit-max-content max-content/370px;
-    grid-template: minmax(130px, 1fr) max-content max-content/370px;
+    grid-template: minmax(130px, 1fr) -webkit-max-content max-content/100vw;
+    grid-template: minmax(130px, 1fr) max-content max-content/100vw;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
+    padding: 0;
+    grid-gap: 0;
   }
 
   .l-main-header__heading {
@@ -1092,20 +1168,28 @@ body {
 
   .l-main-header {
     grid-column-end: 2;
+    border-radius: 0;
   }
 
   .l-main-tasks {
     grid-row-end: 3;
+    border: none;
+    border-radius: 0;
   }
 
   .l-main__calendar {
     grid-row-start: 3;
     grid-row-end: 4;
+    border-radius: 0;
+    border: none;
+    background: #ccc;
   }
 
   .l-main__calculator {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 5;
+    border: none;
+    border-radius: 0;
   }
 }

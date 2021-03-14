@@ -44,6 +44,8 @@
                     id="change-city-button">Change.</span>
                 </div>
               </div>
+              <button class="l-main-header__weather-refresh"
+                id="weather-refresh"></button>
               <img class="l-main-header__weather-icon" alt='weather-icon'
                 id='weather-icon'>
             </div>
@@ -95,12 +97,14 @@
         </div>
       </div>
       <div class="l-main__calendar">
+        <button class="l-main__calendar-today" title="Today"
+          id="go-to-today"></button>
         <div class="l-main__calendar-controls">
-          <input type="button" id="prev-month" title="Предыдущий месяц"
-            value="&lt;" class="l-main__calendar-change-month" />
+          <button type="button" id="prev-month" title="Предыдущий месяц"
+            class="l-main__calendar-change-month"></button>
           <div id="curr-month" class="l-main__calendar-current-month"></div>
-          <input type="button" id="next-month" title="Следующий месяц"
-            value="&gt;" class="l-main__calendar-change-month" />
+          <button type="button" id="next-month" title="Следующий месяц"
+            class="l-main__calendar-change-month"></button>
         </div>
         <div class="l-main__calendar-days">
           <div class="l-main__calendar-days-item">MON</div>

@@ -10,6 +10,8 @@
 
   @media (max-width: 767px) {
     grid-row-end: 3;
+    border: none;
+    border-radius: 0;
   }
 
   &-header {
@@ -59,11 +61,21 @@
 
       &:hover {
         border-color: black;
-        background: rgb(206, 205, 205);
+        background: rgb(205, 205, 205);
       }
 
       &:focus {
         border-color: black;
+      }
+
+      &_locked {
+        cursor: default;
+        background-color: #e0e0e0;
+
+        &:hover {
+          background-color: #e0e0e0;
+          border-color: transparent;
+        }
       }
     }
   }
