@@ -1134,8 +1134,7 @@ body {
 
 @media (max-width: 767px) {
   .l-main__container {
-    grid-template: minmax(130px, 1fr) -webkit-max-content max-content/100vw;
-    grid-template: minmax(130px, 1fr) max-content max-content/100vw;
+    grid-template: minmax(130px, 1fr) 500px max-content/100vw;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
