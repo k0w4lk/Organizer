@@ -905,6 +905,7 @@ table {
 .l-main__calendar-change-month {
   height: 20px;
   outline: none;
+  cursor: pointer;
 }
 
 .l-main__calendar-change-month:active {

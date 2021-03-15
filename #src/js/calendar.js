@@ -118,6 +118,8 @@ function render(month, year) {
 }
 
 goToToday.addEventListener('click', () => {
+  cbMonth = currentMonth;
+  cbYear = currentYear;
   render(currentMonth, currentYear);
 });
 
