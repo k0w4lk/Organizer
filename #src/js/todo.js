@@ -349,7 +349,7 @@ function editTaskTBD(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value;
+    let text = event.target.previousSibling.value.trim();
     let currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataTBD = dataTBD.filter((task) => task.id !== currentId);
@@ -398,7 +398,7 @@ function editTaskDone(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value;
+    let text = event.target.previousSibling.value.trim();
     let currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataDone = dataDone.filter((task) => task.id !== currentId);

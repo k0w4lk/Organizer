@@ -12,9 +12,10 @@ const weatherPreload = document.querySelector('#weather-preload');
 const weatherLoad = document.querySelector('#weather-load');
 const refreshWeather = document.querySelector('#weather-refresh');
 
-let savedCity = JSON.parse(localStorage.getItem('savedCity')) || {
+const savedCity = JSON.parse(localStorage.getItem('savedCity')) || {
   city: undefined,
 };
+
 function saveCity(cityName) {
   savedCity.city = cityName;
   localStorage.setItem('savedCity', JSON.stringify(savedCity));
@@ -25,7 +26,7 @@ async function getWeatherData(key, cityName) {
     let response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${key}&units=metric`
     );
-    let data = await response.json();
+    const data = await response.json();
     return data;
   } catch (err) {
     console.log(err);
@@ -34,25 +35,29 @@ async function getWeatherData(key, cityName) {
 
 let temperature, feelsLike, icon, src, city;
 
+function fillWeatherTemplate(response) {
+  temperature = response.main.temp;
+  feelsLike = response.main.feels_like;
+  icon = response.weather[0].icon;
+  city = response.name;
+  src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
+  weatherCity.innerText = `${city}: `;
+  feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
+  weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
+  weatherIcon.src = src;
+  changeCity.innerHTML = `${city} isn't your city?`;
+  changeCityButton.innerText = 'Change.';
+  weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
+  weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+}
+
 function renderWeather() {
   getWeatherData(
     API_KEY,
     localStorage.getItem('savedCity') ? savedCity.city : DEFAULT_CITY_NAME
-  ).then((res) => {
-    temperature = res.main.temp;
-    feelsLike = res.main.feels_like;
-    icon = res.weather[0].icon;
-    city = res.name;
-    src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-
-    weatherCity.innerText = `${city}: `;
-    feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
-    weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
-    weatherIcon.src = src;
-    changeCity.innerHTML = `${city} isn't your city?`;
-    changeCityButton.innerText = 'Change.';
-    weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
-    weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+  ).then((response) => {
+    fillWeatherTemplate(response);
   });
 }
 
@@ -70,23 +75,10 @@ changeCityButton.addEventListener('click', () => {
   newCity.placeholder = 'Enter your city';
 });
 
-save.addEventListener('click', () => {
-  getWeatherData(API_KEY, newCity.value).then((res) => {
+function renderSavedCityWeather() {
+  getWeatherData(API_KEY, newCity.value).then((response) => {
     try {
-      temperature = res.main.temp;
-      feelsLike = res.main.feels_like;
-      icon = res.weather[0].icon;
-      city = res.name;
-      src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-
-      weatherCity.innerText = `${city}: `;
-      feelsLikeText.innerHTML = `Feels like: ${Math.round(feelsLike)} &#730;C`;
-      weatherTemperature.innerHTML = `${Math.round(temperature)} &#730;C`;
-      weatherIcon.src = src;
-      changeCity.innerHTML = `${city} isn't your city?`;
-      changeCityButton.innerText = 'Change.';
-      weatherPreload.classList.add('l-main-header__weather-preloader_hidden');
-      weatherLoad.classList.remove('l-main-header__weather-loaded_hidden');
+      fillWeatherTemplate(response);
       saveCity(newCity.value);
       newCity.remove();
       save.remove();
@@ -94,9 +86,17 @@ save.addEventListener('click', () => {
       newCity.value = '';
       newCity.placeholder = 'City not found';
       newCity.focus();
-      weatherBlock.append(errorText);
     }
   });
+}
+
+save.addEventListener('click', () => {
+  renderSavedCityWeather();
+});
+
+newCity.addEventListener('keypress', (event) => {
+  if (event.code !== 'Enter') return;
+  renderSavedCityWeather();
 });
 
 refreshWeather.addEventListener('click', () => {
