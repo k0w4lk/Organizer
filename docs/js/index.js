@@ -17,6 +17,8 @@ function showCurrentDate() {
   })`;
 }
 
+showCurrentDate();
+
 'use strict';
 
 const newTaskText = document.querySelector('#new-task-text'),
@@ -523,7 +525,6 @@ async function getQoD() {
 }
 
 getQoD();
-showCurrentDate();
 ;
 const API_KEY = 'fc522175fa7782718e0d7c3b81e2f841';
 const IMG_URL = `http://openweathermap.org/img/wn/10d@2x.png`;

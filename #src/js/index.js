@@ -17,6 +17,8 @@ function showCurrentDate() {
   })`;
 }
 
+showCurrentDate();
+
 @@include('todo.js');
 @@include('quote.js');
 @@include('weather.js');
