@@ -1,4 +1,4 @@
-const currentDate = document.querySelector('#current-date');
+const currentDateWrapper = document.querySelector('#current-date');
 
 const days = [
   'Sunday',
@@ -12,7 +12,7 @@ const days = [
 
 function showCurrentDate() {
   let today = new Date();
-  currentDate.innerText = `${today.toLocaleDateString()} (${
+  currentDateWrapper.innerText = `${today.toLocaleDateString()} (${
     days[today.getDay()]
   })`;
 }

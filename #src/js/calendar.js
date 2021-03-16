@@ -2,12 +2,13 @@ const prevMonthButton = document.querySelector('#prev-month');
 const nextMonthButton = document.querySelector('#next-month');
 const goToToday = document.querySelector('#go-to-today');
 const daysTemplate = document.querySelector('#curr-month');
-const calendarTemplate = document.querySelector('#calendar');
+const calendarWrapper = document.querySelector('#calendar');
 
-const currentMonth = new Date().getMonth();
-const currentYear = new Date().getFullYear();
+const currentDate = new Date();
+const currentMonth = currentDate.getMonth();
+const currentYear = currentDate.getFullYear();
 
-let months = [
+const months = [
   'January',
   'February',
   'March',
@@ -22,7 +23,7 @@ let months = [
   'December',
 ];
 
-let holidays = [
+const holidays = [
   { month: 0, day: 1 },
   { month: 0, day: 7 },
   { month: 2, day: 8 },
@@ -34,93 +35,102 @@ let holidays = [
 ];
 
 function currentMonthDays(month, year) {
-  let days = new Date(new Date(year, month + 1).setDate(0)).getDate();
-  return days;
+  const lastDayTimestamp = new Date(year, month + 1).setDate(0);
+  const lastDay = new Date(lastDayTimestamp).getDate();
+  return lastDay;
 }
 
-function showCurrentMonthDays(month, year) {
-  let template = document.createElement('div');
+function createCalendarTemplate() {
+  const template = document.createElement('div');
   template.classList.add('l-main__calendar-dates');
-  let firstDay = new Date(year, month).getDay();
-  if (firstDay >= 2) {
-    for (let i = 1; i < firstDay; i++) {
-      let div = document.createElement('div');
-      template.append(div);
+  return template;
+}
+
+function createEmptyDateBlocks(firstDay, template) {
+  for (let i = 1; i < firstDay; i++) {
+    const div = document.createElement('div');
+    template.append(div);
+  }
+}
+
+function renderFirstDateSpace(template, month, year) {
+  const firstDay = new Date(year, month).getDay();
+  if (firstDay > 0) {
+    createEmptyDateBlocks(firstDay, template);
+  } else {
+    createEmptyDateBlocks(7, template);
+  }
+}
+
+function highlightToday(month, year, date, dateWrapper) {
+  if (
+    month === currentMonth &&
+    year === currentYear &&
+    date === currentDate.getDate()
+  ) {
+    dateWrapper.classList.add('l-main__calendar-dates-item_today');
+  }
+}
+
+function highlightHoliday(month, date, dateWrapper) {
+  for (let item of holidays) {
+    if (month === item.month && date === item.day) {
+      dateWrapper.classList.add('l-main__calendar-dates-item_red');
     }
   }
-  if (firstDay === 0) {
-    for (let i = 0; i < 6; i++) {
-      let div = document.createElement('div');
-      template.append(div);
-    }
+}
+
+function highlightWeekend(month, year, date, dateWrapper) {
+  const day = new Date(year, month, date).getDay();
+  if (day === 0 || day === 6) {
+    dateWrapper.classList.add('l-main__calendar-dates-item_red');
   }
-  createTemplate: for (let i = 1; i <= currentMonthDays(month, year); i++) {
-    for (let item of holidays) {
-      if (month === item.month && i === item.day) {
-        let div = document.createElement('div');
-        div.classList.add(
-          'l-main__calendar-dates-item',
-          'l-main__calendar-dates-item_red'
-        );
-        if (
-          month === currentMonth &&
-          year === currentYear &&
-          i === new Date().getDate()
-        ) {
-          div.classList.add('l-main__calendar-item_today');
-        }
-        div.innerText = i;
-        template.append(div);
-        continue createTemplate;
-      }
-    }
-    if (
-      month === currentMonth &&
-      year === currentYear &&
-      i === new Date().getDate()
-    ) {
-      let div = document.createElement('div');
-      div.classList.add(
-        'l-main__calendar-dates-item',
-        'l-main__calendar-dates-item_today'
-      );
-      div.innerText = i;
-      template.append(div);
-    } else {
-      let div = document.createElement('div');
-      div.classList.add('l-main__calendar-dates-item');
-      div.innerText = i;
-      template.append(div);
-    }
+}
+
+function createCalendarDates(month, year, template) {
+  for (let i = 1; i <= currentMonthDays(month, year); i++) {
+    const dateWrapper = document.createElement('div');
+    dateWrapper.classList.add('l-main__calendar-dates-item');
+    dateWrapper.innerText = i;
+    highlightToday(month, year, i, dateWrapper);
+    highlightHoliday(month, i, dateWrapper);
+    highlightWeekend(month, year, i, dateWrapper);
+    template.append(dateWrapper);
   }
-  calendar.innerHTML = '';
-  calendar.append(template);
+}
+
+function renderCalendarDates(month, year) {
+  const template = createCalendarTemplate();
+  renderFirstDateSpace(template, month, year);
+  createCalendarDates(month, year, template);
+  calendarWrapper.innerHTML = '';
+  calendarWrapper.append(template);
+}
+
+function renderCalendar(month, year) {
+  daysTemplate.innerHTML = `${months[month]} ${year}`;
+  renderCalendarDates(month, year);
 }
 
 let cbMonth = currentMonth;
 let cbYear = currentYear;
 
 prevMonthButton.addEventListener('click', () => {
-  let month = cbMonth ? --cbMonth : ((cbMonth = 11), 11);
+  let month = cbMonth ? --cbMonth : (cbMonth = 11);
   let year = cbMonth === 11 ? --cbYear : cbYear;
-  render(month, year);
+  renderCalendar(month, year);
 });
 
 nextMonthButton.addEventListener('click', () => {
   let year = cbMonth !== 11 ? cbYear : ++cbYear;
-  let month = cbMonth !== 11 ? ++cbMonth : ((cbMonth = 0), 0);
-  render(month, year);
+  let month = cbMonth !== 11 ? ++cbMonth : (cbMonth = 0);
+  renderCalendar(month, year);
 });
-
-function render(month, year) {
-  daysTemplate.innerHTML = `${months[month]} ${year}`;
-  showCurrentMonthDays(month, year);
-}
 
 goToToday.addEventListener('click', () => {
   cbMonth = currentMonth;
   cbYear = currentYear;
-  render(currentMonth, currentYear);
+  renderCalendar(currentMonth, currentYear);
 });
 
-render(currentMonth, currentYear);
+renderCalendar(currentMonth, currentYear);
