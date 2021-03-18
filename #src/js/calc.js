@@ -1,13 +1,13 @@
 'use strict';
 
-const output = document.querySelector('#output'),
-  clean = document.querySelector('#clean'),
-  buttons = document.querySelector('#buttons');
+const output = document.querySelector('#output');
+const clean = document.querySelector('#clean');
+const buttons = document.querySelector('#buttons');
 
-let firstOperand = '',
-  secondOperand = '',
-  operator = null,
-  wasResult = false;
+let firstOperand = '';
+let secondOperand = '';
+let operator = null;
+let wasResult = false;
 
 function setOperand(operator, event) {
   if (event.target.value === '0' && output.textContent === '0') return;
@@ -18,14 +18,12 @@ function setOperand(operator, event) {
     wasResult = false;
   }
   if (!operator) {
-    firstOperand.length < 8
-      ? (firstOperand += event.target.value)
-      : firstOperand;
-    output.innerHTML = firstOperand;
-  } else {
-    secondOperand.length < 8
-      ? (secondOperand += event.target.value)
-      : secondOperand;
+    if (firstOperand.length < 8) {
+      firstOperand += event.target.value;
+      output.innerHTML = firstOperand;
+    }
+  } else if (secondOperand.length < 8) {
+    secondOperand += event.target.value;
     output.innerHTML = secondOperand;
   }
 }
@@ -38,23 +36,18 @@ function clearData() {
 }
 
 function getResult(operand1, operand2, operator) {
-  let res;
   switch (operator) {
     case '+':
-      res = +operand1 + +operand2;
-      return res;
+      return Number(operand1) + Number(operand2);
     case '-':
-      res = +operand1 - +operand2;
-      return res;
+      return Number(operand1) - Number(operand2);
     case '*':
-      res = +operand1 * +operand2;
-      return res;
+      return Number(operand1) * Number(operand2);
     case '/':
-      res = +operand1 / +operand2;
-      return res;
+      return Number(operand1) / Number(operand2);
 
     default:
-      break;
+      return null;
   }
 }
 
@@ -62,7 +55,7 @@ function setOperator(event) {
   if (secondOperand !== '') {
     firstOperand = getResult(firstOperand, secondOperand, operator);
     secondOperand = '';
-    if (('' + firstOperand).length > 8) {
+    if (String(firstOperand).length > 8) {
       output.innerHTML = firstOperand.toExponential(2);
     } else {
       output.innerHTML = firstOperand;
@@ -75,7 +68,7 @@ function setOperator(event) {
 
 function showResult() {
   let result = getResult(firstOperand, secondOperand, operator);
-  if (('' + result).length > 8) {
+  if (String(result).length > 8) {
     output.innerHTML = result.toExponential(2);
   } else {
     output.innerHTML = result;
@@ -84,11 +77,11 @@ function showResult() {
 
 buttons.addEventListener('click', (event) => {
   if (event.target.id === 'buttons') return;
-  if (isFinite(+event.target.value)) {
+  if (isFinite(Number(event.target.value))) {
     setOperand(operator, event);
   }
   if (
-    isNaN(+event.target.value) &&
+    isNaN(Number(event.target.value)) &&
     event.target.value !== '=' &&
     firstOperand !== ''
   ) {
@@ -105,6 +98,7 @@ buttons.addEventListener('click', (event) => {
     secondOperand = '';
     wasResult = true;
   }
+  console.log(firstOperand, operator, secondOperand);
 });
 
 clean.addEventListener('click', () => {
