@@ -4,103 +4,45 @@ const output = document.querySelector('#output');
 const clean = document.querySelector('#clean');
 const buttons = document.querySelector('#buttons');
 
-let firstOperand = '';
-let secondOperand = '';
-let operator = null;
-let wasResult = false;
+let outputText = '';
+let operand;
+let operator;
 
-function setOperand(operator, event) {
-  if (event.target.value === '0' && output.textContent === '0') return;
-  if (firstOperand === '0') firstOperand = '';
-  if (secondOperand === '0') secondOperand = '';
-  if (wasResult) {
-    clearData();
-    wasResult = false;
-  }
-  if (!operator) {
-    if (firstOperand.length < 8) {
-      firstOperand += event.target.value;
-      output.innerHTML = firstOperand;
-    }
-  } else if (secondOperand.length < 8) {
-    secondOperand += event.target.value;
-    output.innerHTML = secondOperand;
-  }
+function setOperand(event) {
+  if (outputText.length === 8) return;
+  outputText += event.target.value;
+  output.innerText = outputText;
 }
 
-function clearData() {
-  firstOperand = '';
-  secondOperand = '';
-  operator = null;
-  output.innerHTML = '';
-}
-
-function getResult(operand1, operand2, operator) {
+function getResult(operator) {
   switch (operator) {
     case '+':
-      return Number(operand1) + Number(operand2);
+      return Number(outputText) + Number(operand);
     case '-':
-      return Number(operand1) - Number(operand2);
+      return Number(outputText) - Number(operand);
     case '*':
-      return Number(operand1) * Number(operand2);
+      return Number(outputText) * Number(operand);
     case '/':
-      return Number(operand1) / Number(operand2);
-
-    default:
-      return null;
-  }
-}
-
-function setOperator(event) {
-  if (secondOperand !== '') {
-    firstOperand = getResult(firstOperand, secondOperand, operator);
-    secondOperand = '';
-    if (String(firstOperand).length > 8) {
-      output.innerHTML = firstOperand.toExponential(2);
-    } else {
-      output.innerHTML = firstOperand;
-    }
-    operator = event.target.value;
-  }
-  wasResult = false;
-  operator = event.target.value;
-}
-
-function showResult() {
-  let result = getResult(firstOperand, secondOperand, operator);
-  if (String(result).length > 8) {
-    output.innerHTML = result.toExponential(2);
-  } else {
-    output.innerHTML = result;
+      return Number(outputText) / Number(operand);
   }
 }
 
 buttons.addEventListener('click', (event) => {
-  if (event.target.id === 'buttons') return;
-  if (isFinite(Number(event.target.value))) {
-    setOperand(operator, event);
+  if (event.target.dataset.group === 'number') {
+    setOperand(event);
   }
-  if (
-    isNaN(Number(event.target.value)) &&
-    event.target.value !== '=' &&
-    firstOperand !== ''
-  ) {
-    setOperator(event);
+  if (event.target.dataset.group === 'operator') {
+    operator = event.target.value;
+    if (outputText.length) {
+      operand = outputText;
+      outputText = '';
+      return;
+    }
+    if (output.textContent) output.innerText = getResult(operator);
   }
-  if (
-    event.target.value === '=' &&
-    firstOperand !== '' &&
-    secondOperand !== ''
-  ) {
-    showResult();
-    firstOperand = output.textContent;
-    operator = null;
-    secondOperand = '';
-    wasResult = true;
-  }
-  console.log(firstOperand, operator, secondOperand);
 });
 
 clean.addEventListener('click', () => {
-  clearData();
+  outputText = '';
+  output.innerText = outputText;
 });
