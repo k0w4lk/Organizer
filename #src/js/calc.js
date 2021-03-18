@@ -1,5 +1,3 @@
-'use strict';
-
 const output = document.querySelector('#output');
 const clean = document.querySelector('#clean');
 const buttons = document.querySelector('#buttons');
@@ -11,8 +9,6 @@ let wasResult = false;
 
 function setOperand(operator, event) {
   if (event.target.value === '0' && output.textContent === '0') return;
-  if (firstOperand === '0') firstOperand = '';
-  if (secondOperand === '0') secondOperand = '';
   if (wasResult) {
     clearData();
     wasResult = false;
@@ -20,11 +16,11 @@ function setOperand(operator, event) {
   if (!operator) {
     if (firstOperand.length < 8) {
       firstOperand += event.target.value;
-      output.innerHTML = firstOperand;
+      output.innerHTML = Number(firstOperand);
     }
   } else if (secondOperand.length < 8) {
     secondOperand += event.target.value;
-    output.innerHTML = secondOperand;
+    output.innerHTML = Number(secondOperand);
   }
 }
 
@@ -52,6 +48,7 @@ function getResult(operand1, operand2, operator) {
 }
 
 function setOperator(event) {
+  const operatorValue = event.target.value;
   if (secondOperand !== '') {
     firstOperand = getResult(firstOperand, secondOperand, operator);
     secondOperand = '';
@@ -60,14 +57,14 @@ function setOperator(event) {
     } else {
       output.innerHTML = firstOperand;
     }
-    operator = event.target.value;
+    operator = operatorValue;
   }
   wasResult = false;
-  operator = event.target.value;
+  operator = operatorValue;
 }
 
 function showResult() {
-  let result = getResult(firstOperand, secondOperand, operator);
+  const result = getResult(firstOperand, secondOperand, operator);
   if (String(result).length > 8) {
     output.innerHTML = result.toExponential(2);
   } else {
@@ -98,7 +95,6 @@ buttons.addEventListener('click', (event) => {
     secondOperand = '';
     wasResult = true;
   }
-  console.log(firstOperand, operator, secondOperand);
 });
 
 clean.addEventListener('click', () => {

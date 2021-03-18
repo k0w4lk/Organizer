@@ -1,3 +1,5 @@
+'use strict';
+
 const currentDateWrapper = document.querySelector('#current-date');
 
 const days = [

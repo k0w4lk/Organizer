@@ -1,26 +1,24 @@
-'use strict';
+const newTaskText = document.querySelector('#new-task-text');
+const newTaskAdd = document.querySelector('#new-task-add');
+const newTaskError = document.querySelector('#new-task-error');
 
-const newTaskText = document.querySelector('#new-task-text'),
-  newTaskAdd = document.querySelector('#new-task-add'),
-  newTaskError = document.querySelector('#new-task-error');
+const counterTBD = document.querySelector('#counter-TBD');
+const counterDone = document.querySelector('#counter-done');
 
-const counterTBD = document.querySelector('#counter-TBD'),
-  counterDone = document.querySelector('#counter-done');
+const massButtonsTBD = document.querySelector('#mass-buttons-TBD');
+const massButtonsDone = document.querySelector('#mass-buttons-done');
 
-const massButtonsTBD = document.querySelector('#mass-buttons-TBD'),
-  massButtonsDone = document.querySelector('#mass-buttons-done');
+const chooseAllTBD = document.querySelector('#choose-all-TBD');
+const chooseAllDone = document.querySelector('#choose-all-done');
 
-const chooseAllTBD = document.querySelector('#choose-all-TBD'),
-  chooseAllDone = document.querySelector('#choose-all-done');
+const allToDone = document.querySelector('#all-to-done');
+const allToExecution = document.querySelector('#all-to-execution');
 
-const allToDone = document.querySelector('#all-to-done'),
-  allToExecution = document.querySelector('#all-to-execution');
+const deleteAllTBD = document.querySelector('#delete-all-TBD');
+const deleteAllDone = document.querySelector('#delete-all-done');
 
-const deleteAllTBD = document.querySelector('#delete-all-TBD'),
-  deleteAllDone = document.querySelector('#delete-all-done');
-
-const listTBD = document.querySelector('#list-TBD'),
-  listDone = document.querySelector('#list-done');
+const listTBD = document.querySelector('#list-TBD');
+const listDone = document.querySelector('#list-done');
 
 let dataTBD, dataDone;
 
@@ -116,7 +114,7 @@ function renderTasks() {
 function resetCheckboxesStatuses() {
   chooseAllTBD.checked = false;
   chooseAllDone.checked = false;
-  let checkboxes = document.querySelectorAll('.l-main-task__checkbox');
+  const checkboxes = document.querySelectorAll('.l-main-task__checkbox');
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.nextSibling.classList.remove('l-main-task_checked');
@@ -243,22 +241,22 @@ function chooseTask(event, data, list) {
 }
 
 function lockCheckboxesDone() {
-  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
 }
 
 function unlockCheckboxesDone() {
-  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
 }
 
 function lockCheckboxesTBD() {
-  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
 }
 
 function unlockCheckboxesTBD() {
-  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
 }
 
@@ -335,7 +333,7 @@ function editTaskTBD(event) {
 
     lockEditButtons(dataTBD);
     addNewTaskStatus(true);
-    let editInput = document.createElement('input');
+    const editInput = document.createElement('input');
     editInput.style = 'width: 85%';
     editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
@@ -349,8 +347,8 @@ function editTaskTBD(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value.trim();
-    let currentId = event.target.parentNode.dataset.id;
+    const text = event.target.previousSibling.value.trim();
+    const currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataTBD = dataTBD.filter((task) => task.id !== currentId);
     } else {
@@ -384,7 +382,7 @@ function editTaskDone(event) {
     addNewTaskStatus(true);
 
     lockEditButtons(dataDone);
-    let editInput = document.createElement('input');
+    const editInput = document.createElement('input');
     editInput.style = 'width: 85%';
     editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
@@ -398,8 +396,8 @@ function editTaskDone(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value.trim();
-    let currentId = event.target.parentNode.dataset.id;
+    const text = event.target.previousSibling.value.trim();
+    const currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataDone = dataDone.filter((task) => task.id !== currentId);
     } else {
@@ -419,7 +417,7 @@ function editTaskDone(event) {
 }
 
 function lockEditButtons(data) {
-  let editButtons = document.querySelectorAll('.l-main-task__edit-button');
+  const editButtons = document.querySelectorAll('.l-main-task__edit-button');
   data.forEach((task) => {
     if (task.toEdit) {
       editButtons.forEach((button) => {

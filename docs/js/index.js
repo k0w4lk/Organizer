@@ -1,3 +1,5 @@
+'use strict';
+
 const currentDateWrapper = document.querySelector('#current-date');
 
 const days = [
@@ -19,29 +21,27 @@ function showCurrentDate() {
 
 showCurrentDate();
 
-'use strict';
+const newTaskText = document.querySelector('#new-task-text');
+const newTaskAdd = document.querySelector('#new-task-add');
+const newTaskError = document.querySelector('#new-task-error');
 
-const newTaskText = document.querySelector('#new-task-text'),
-  newTaskAdd = document.querySelector('#new-task-add'),
-  newTaskError = document.querySelector('#new-task-error');
+const counterTBD = document.querySelector('#counter-TBD');
+const counterDone = document.querySelector('#counter-done');
 
-const counterTBD = document.querySelector('#counter-TBD'),
-  counterDone = document.querySelector('#counter-done');
+const massButtonsTBD = document.querySelector('#mass-buttons-TBD');
+const massButtonsDone = document.querySelector('#mass-buttons-done');
 
-const massButtonsTBD = document.querySelector('#mass-buttons-TBD'),
-  massButtonsDone = document.querySelector('#mass-buttons-done');
+const chooseAllTBD = document.querySelector('#choose-all-TBD');
+const chooseAllDone = document.querySelector('#choose-all-done');
 
-const chooseAllTBD = document.querySelector('#choose-all-TBD'),
-  chooseAllDone = document.querySelector('#choose-all-done');
+const allToDone = document.querySelector('#all-to-done');
+const allToExecution = document.querySelector('#all-to-execution');
 
-const allToDone = document.querySelector('#all-to-done'),
-  allToExecution = document.querySelector('#all-to-execution');
+const deleteAllTBD = document.querySelector('#delete-all-TBD');
+const deleteAllDone = document.querySelector('#delete-all-done');
 
-const deleteAllTBD = document.querySelector('#delete-all-TBD'),
-  deleteAllDone = document.querySelector('#delete-all-done');
-
-const listTBD = document.querySelector('#list-TBD'),
-  listDone = document.querySelector('#list-done');
+const listTBD = document.querySelector('#list-TBD');
+const listDone = document.querySelector('#list-done');
 
 let dataTBD, dataDone;
 
@@ -137,7 +137,7 @@ function renderTasks() {
 function resetCheckboxesStatuses() {
   chooseAllTBD.checked = false;
   chooseAllDone.checked = false;
-  let checkboxes = document.querySelectorAll('.l-main-task__checkbox');
+  const checkboxes = document.querySelectorAll('.l-main-task__checkbox');
   checkboxes.forEach((checkbox) => {
     checkbox.checked = false;
     checkbox.nextSibling.classList.remove('l-main-task_checked');
@@ -264,22 +264,22 @@ function chooseTask(event, data, list) {
 }
 
 function lockCheckboxesDone() {
-  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
 }
 
 function unlockCheckboxesDone() {
-  let checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listDone.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
 }
 
 function lockCheckboxesTBD() {
-  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = true));
 }
 
 function unlockCheckboxesTBD() {
-  let checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
+  const checkboxesDone = listTBD.querySelectorAll('.l-main-task__checkbox');
   checkboxesDone.forEach((checkbox) => (checkbox.disabled = false));
 }
 
@@ -356,7 +356,7 @@ function editTaskTBD(event) {
 
     lockEditButtons(dataTBD);
     addNewTaskStatus(true);
-    let editInput = document.createElement('input');
+    const editInput = document.createElement('input');
     editInput.style = 'width: 85%';
     editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
@@ -370,8 +370,8 @@ function editTaskTBD(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value.trim();
-    let currentId = event.target.parentNode.dataset.id;
+    const text = event.target.previousSibling.value.trim();
+    const currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataTBD = dataTBD.filter((task) => task.id !== currentId);
     } else {
@@ -405,7 +405,7 @@ function editTaskDone(event) {
     addNewTaskStatus(true);
 
     lockEditButtons(dataDone);
-    let editInput = document.createElement('input');
+    const editInput = document.createElement('input');
     editInput.style = 'width: 85%';
     editInput.setAttribute('maxlength', '100');
     editInput.value = event.target.previousSibling.innerText;
@@ -419,8 +419,8 @@ function editTaskDone(event) {
     return;
   }
   if (event.target.dataset.edit === 'save') {
-    let text = event.target.previousSibling.value.trim();
-    let currentId = event.target.parentNode.dataset.id;
+    const text = event.target.previousSibling.value.trim();
+    const currentId = event.target.parentNode.dataset.id;
     if (!text.length) {
       dataDone = dataDone.filter((task) => task.id !== currentId);
     } else {
@@ -440,7 +440,7 @@ function editTaskDone(event) {
 }
 
 function lockEditButtons(data) {
-  let editButtons = document.querySelectorAll('.l-main-task__edit-button');
+  const editButtons = document.querySelectorAll('.l-main-task__edit-button');
   data.forEach((task) => {
     if (task.toEdit) {
       editButtons.forEach((button) => {
@@ -635,8 +635,6 @@ refreshWeather.addEventListener('click', () => {
 
 renderWeather();
 ;
-'use strict';
-
 const output = document.querySelector('#output');
 const clean = document.querySelector('#clean');
 const buttons = document.querySelector('#buttons');
@@ -648,8 +646,6 @@ let wasResult = false;
 
 function setOperand(operator, event) {
   if (event.target.value === '0' && output.textContent === '0') return;
-  if (firstOperand === '0') firstOperand = '';
-  if (secondOperand === '0') secondOperand = '';
   if (wasResult) {
     clearData();
     wasResult = false;
@@ -657,11 +653,11 @@ function setOperand(operator, event) {
   if (!operator) {
     if (firstOperand.length < 8) {
       firstOperand += event.target.value;
-      output.innerHTML = firstOperand;
+      output.innerHTML = Number(firstOperand);
     }
   } else if (secondOperand.length < 8) {
     secondOperand += event.target.value;
-    output.innerHTML = secondOperand;
+    output.innerHTML = Number(secondOperand);
   }
 }
 
@@ -689,6 +685,7 @@ function getResult(operand1, operand2, operator) {
 }
 
 function setOperator(event) {
+  const operatorValue = event.target.value;
   if (secondOperand !== '') {
     firstOperand = getResult(firstOperand, secondOperand, operator);
     secondOperand = '';
@@ -697,14 +694,14 @@ function setOperator(event) {
     } else {
       output.innerHTML = firstOperand;
     }
-    operator = event.target.value;
+    operator = operatorValue;
   }
   wasResult = false;
-  operator = event.target.value;
+  operator = operatorValue;
 }
 
 function showResult() {
-  let result = getResult(firstOperand, secondOperand, operator);
+  const result = getResult(firstOperand, secondOperand, operator);
   if (String(result).length > 8) {
     output.innerHTML = result.toExponential(2);
   } else {
@@ -735,7 +732,6 @@ buttons.addEventListener('click', (event) => {
     secondOperand = '';
     wasResult = true;
   }
-  console.log(firstOperand, operator, secondOperand);
 });
 
 clean.addEventListener('click', () => {
