@@ -1,7 +1,6 @@
 # Project folders
 
-/dist
-/node_modules
+node_modules
 
 # Project files
 *.zip
