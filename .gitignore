@@ -1,5 +1,8 @@
-# Игнорировать файл package-lock.json
-package-lock.json
+# Project folders
 
-# Игнорировать папку node_modules
+/dist
 /node_modules
+
+# Project files
+*.zip
+/gulp/version.json

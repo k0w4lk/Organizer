@@ -1,0 +1,17 @@
+@mixin screen-equal-or-less-than($width) {
+  @media screen and (max-width: ($width - 1 + 'px')) {
+    @content;
+  }
+}
+
+@mixin screen-more-than($width) {
+  @media screen and (min-width: ($width + 'px')) {
+    @content;
+  }
+}
+
+@mixin screen-between($min-width, $max-width) {
+  @media screen and (min-width: ($min-width + 'px')) and (max-width: ($max-width - 1 + 'px')) {
+    @content;
+  }
+}
