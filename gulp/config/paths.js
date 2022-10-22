@@ -8,16 +8,16 @@ const srcFolder = './src';
 export const path = {
   build: {
     html: `${buildFolder}/`,
-    css: `${buildFolder}/css/`,
-    js: `${buildFolder}/js/`,
+    css: `${buildFolder}/`,
+    js: `${buildFolder}/`,
     images: `${buildFolder}/images/`,
     fonts: `${buildFolder}/fonts/`,
     assets: `${buildFolder}/assets/`,
   },
   src: {
-    html: [`${srcFolder}/html/pages/*.html`],
+    html: [`${srcFolder}/**/*.html`],
     scss: [`${srcFolder}/scss/index.scss`, `${srcFolder}/scss/pages/*.scss`],
-    js: [`${srcFolder}/js/index.js`, `${srcFolder}/js/pages/*.js`],
+    js: [`${srcFolder}/js/index.js`, `${srcFolder}/js/controllers/*.js`],
     images: `${srcFolder}/images/**/*.{jpg,jpeg,png,webp}`,
     nonconvertibleImages: `${srcFolder}/images/**/*.{svg,gif,ico}`,
     assets: `${srcFolder}/assets/**/*.*`,

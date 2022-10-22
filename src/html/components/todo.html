@@ -1,0 +1,66 @@
+<div ng-controller="todoController">
+  <h2>My Tasks</h2>
+
+  <input
+    type="text"
+    ng-model="taskName"
+  />
+
+  <button ng-click="setTask(taskName)">Add</button>
+
+  <div>
+    <label>
+      <input
+        type="radio"
+        ng-model="selectedTasksList"
+        value="activeTasks"
+        name="modes"
+      />
+      Active Tasks
+    </label>
+
+    <label>
+      <input
+        type="radio"
+        ng-model="selectedTasksList"
+        value="completedTasks"
+        name="modes"
+      />
+      Completed Tasks
+    </label>
+  </div>
+
+  <div
+    ng-switch
+    on="selectedTasksList"
+  >
+    <ul
+      ng-switch-when="activeTasks"
+      ng-init="initTasks('active')"
+    >
+      <li
+        ng-repeat="task in activeTasks"
+        ng-class="$odd ? 'todo__list-item_odd' : ''"
+      >
+        <span ng-bind="$index + 1"></span>
+        <span>{{ task.name }}</span>
+        <button ng-click="completeTask(task)">Complete</button>
+        <button ng-click="deleteTask(task, activeTasks)">Delete</button>
+      </li>
+    </ul>
+
+    <ul
+      ng-switch-when="completedTasks"
+      ng-init="initTasks('completed')"
+    >
+      <li
+        ng-repeat="task in completedTasks"
+        ng-class="$odd ? 'todo__list-item_odd' : ''"
+      >
+        <span ng-bind="$index + 1"></span>
+        <span>{{ task.name }}</span>
+        <button ng-click="deleteTask(task, completedTasks)">Delete</button>
+      </li>
+    </ul>
+  </div>
+</div>

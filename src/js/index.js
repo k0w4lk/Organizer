@@ -1,5 +1,10 @@
+/* eslint-disable unused-imports/no-unused-imports */
+import angular from 'angular';
+import { ngSanitize } from 'angular-sanitize';
 import { isWebp } from './utils/is-webp.js';
-import { setTranslations } from './utils/translation.js';
 
 isWebp();
-setTranslations();
+
+const organizerApp = angular.module('organizerApp', ['ngSanitize']);
+
+export { organizerApp };

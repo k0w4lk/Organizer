@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="organizerApp">
 
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="css/index.min.css" />
+  <link rel="stylesheet" href="index.min.css" />
+
   <title>Gulp</title>
+
+  <script src="index.js"></script>
 </head>
 
 <body>
-  <main class="container"></main>
-  <script src="js/index.js"></script>
+  <ng-include src="'html/components/header.html'"></ng-include>
+  <ng-include src="'html/components/todo.html'"></ng-include>
 </body>
 
 </html>

@@ -1,14 +1,11 @@
-import fileInclude from 'gulp-file-include';
+import gulpFormatHtml from 'gulp-format-html';
 import gulpHtmlImgWrapper from 'gulp-html-img-wrapper';
 import gulpVersionNumber from 'gulp-version-number';
-import gulpFormatHtml from 'gulp-format-html';
 import { appConfig } from '../config/app.js';
-import { fileIncludeContent } from '../file-include-content.js';
 
 export function html() {
   return appConfig.gulp
     .src(appConfig.path.src.html)
-    .pipe(fileInclude({ context: fileIncludeContent }))
     .pipe(gulpHtmlImgWrapper())
     .pipe(
       appConfig.plugins.gulpIf(

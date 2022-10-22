@@ -1,0 +1,9 @@
+.todo {
+  &__list {
+    &-item {
+      &_odd {
+        background-color: green;
+      }
+    }
+  }
+}

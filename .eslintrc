@@ -8,12 +8,16 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "plugins": ["unused-imports"],
   "rules": {
     "implicit-arrow-linebreak": ["off"],
     "import/extensions": ["error", { "js": "always" }],
     "import/no-extraneous-dependencies": ["off"],
     "import/prefer-default-export": ["off"],
     "no-param-reassign": ["error", { "props": false }],
-    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-unused-vars": ["off"],
+    "unused-imports/no-unused-imports": ["error"],
+    "unused-imports/no-unused-vars": ["error"]
   }
 }

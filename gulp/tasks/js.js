@@ -1,11 +1,11 @@
 import webpack from 'webpack-stream';
-import vinylNamed from 'vinyl-named';
 import { appConfig } from '../config/app.js';
 
 export const js = () =>
   appConfig.gulp
-    .src(appConfig.path.src.js, { sourcemaps: appConfig.isDev })
-    .pipe(vinylNamed())
+    .src(appConfig.path.src.js, {
+      sourcemaps: appConfig.isDev,
+    })
     .pipe(
       webpack({
         mode: appConfig.isBuild ? 'production' : 'development',
@@ -26,6 +26,9 @@ export const js = () =>
               ],
             },
           ],
+        },
+        output: {
+          filename: 'index.js',
         },
       }),
     )
