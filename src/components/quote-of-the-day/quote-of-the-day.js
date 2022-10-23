@@ -1,7 +1,12 @@
 import angular from 'angular';
-import { organizerApp } from '../index.js';
 
-organizerApp.controller('quotesController', ($scope, $http) => {
+const appModule = angular.module('organizerApp');
+
+appModule.component('appQuoteOfTheDay', {
+  templateUrl: 'components/quote-of-the-day/appQuoteOfTheDay.html',
+});
+
+appModule.controller('quotesController', ($scope, $http) => {
   $scope.quoteOfTheDay = null;
 
   $http({ method: 'GET', url: 'https://quotes.rest/qod' }).then((response) => {
@@ -11,9 +16,12 @@ organizerApp.controller('quotesController', ($scope, $http) => {
       title: quoteRawData.title,
       author: quoteRawData.author,
       text: quoteRawData.quote,
+      background: quoteRawData.background,
     };
 
     $scope.quoteOfTheDay = quoteData;
+
+    $scope.setBackground();
   });
 
   $scope.setBackground = () => {
@@ -23,7 +31,7 @@ organizerApp.controller('quotesController', ($scope, $http) => {
 
     quoteOfTheDayElement.css(
       'background-image',
-      $scope.quoteOfTheDay?.background,
+      `url('${$scope.quoteOfTheDay.background}')`,
     );
   };
 });

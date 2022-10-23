@@ -15,14 +15,14 @@
     />
     <link
       rel="shortcut icon"
-      href="images/favicon.png"
+      href="assets/images/favicon.png"
     />
     <link
       rel="stylesheet"
       href="index.min.css"
     />
 
-    <title>Gulp</title>
+    <title>Organizer</title>
 
     <script
       defer
@@ -30,12 +30,8 @@
     ></script>
   </head>
   <body>
-    <div ng-controller="quotesController">
-      <ng-include
-        onload="setBackground()"
-        src="'html/components/header.html'"
-      ></ng-include>
-    </div>
-    <ng-include src="'html/components/todo.html'"></ng-include>
+    <app-header></app-header>
+    <app-quote-of-the-day></app-quote-of-the-day>
+    <app-todo></app-todo>
   </body>
 </html>

@@ -1,5 +1,6 @@
 import dartSass from 'sass';
 import gulpSass from 'gulp-sass';
+import gulpSassGlob from 'gulp-sass-glob';
 import rename from 'gulp-rename';
 import cleanCss from 'gulp-clean-css';
 import webpCss from 'gulp-webpcss';
@@ -12,6 +13,7 @@ const sass = gulpSass(dartSass);
 export const scss = () =>
   appConfig.gulp
     .src(appConfig.path.src.scss, { sourcemaps: appConfig.isDev })
+    .pipe(gulpSassGlob())
     .pipe(sass())
     .pipe(appConfig.plugins.gulpIf(appConfig.isBuild, groupCssMediaQueries()))
     .pipe(
@@ -33,14 +35,11 @@ export const scss = () =>
         }),
       ),
     )
-    // create expanded css files
-    // .pipe(appConfig.gulp.dest(appConfig.path.build.css))
     .pipe(appConfig.plugins.gulpIf(appConfig.isBuild, cleanCss()))
     .pipe(
       rename({
         extname: '.min.css',
       }),
     )
-    .pipe(appConfig.plugins.gulpReplace(/@images\//g, '../images/'))
     .pipe(appConfig.gulp.dest(appConfig.path.build.css))
     .pipe(appConfig.plugins.browserSync.stream());

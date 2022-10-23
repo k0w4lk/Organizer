@@ -1,12 +1,17 @@
 import angular from 'angular';
-import { organizerApp } from '../index.js';
 
 const TASKS_GROUPS = {
   active: 'activeTasks',
   completed: 'completedTasks',
 };
 
-organizerApp.controller('todoController', ($scope) => {
+const appModule = angular.module('organizerApp');
+
+appModule.component('appTodo', {
+  templateUrl: 'components/todo/appTodo.html',
+});
+
+appModule.controller('todoController', ($scope) => {
   $scope.taskName = null;
 
   $scope.activeTasks = [];

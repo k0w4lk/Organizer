@@ -4,11 +4,11 @@ import { appConfig } from '../config/app.js';
 
 export const images = () =>
   appConfig.gulp
-    .src(appConfig.path.src.images)
+    .src(appConfig.path.src.convertibleImages)
     .pipe(appConfig.plugins.gulpNewer(appConfig.path.build.images))
     .pipe(webp())
     .pipe(appConfig.gulp.dest(appConfig.path.build.images))
-    .pipe(appConfig.gulp.src(appConfig.path.src.images))
+    .pipe(appConfig.gulp.src(appConfig.path.src.convertibleImages))
     .pipe(appConfig.plugins.gulpNewer(appConfig.path.build.images))
     .pipe(
       appConfig.plugins.gulpIf(

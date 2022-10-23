@@ -1,27 +1,29 @@
 import fs from 'fs';
 import fonter from 'gulp-fonter-unx';
+import log from 'fancy-log';
 import ttf2woff2 from 'gulp-ttf2woff2';
 import { appConfig } from '../config/app.js';
 
 export const otfToTtf = () =>
   appConfig.gulp
-    .src(`${appConfig.path.srcFolder}/fonts/*.otf`, {})
+    .src(`${appConfig.path.srcFolder}/assets/fonts/*.otf`, {})
     .pipe(
       fonter({
         formats: ['ttf'],
       }),
     )
-    .pipe(appConfig.gulp.dest(`${appConfig.path.srcFolder}/fonts/`));
+    .pipe(appConfig.gulp.dest(`${appConfig.path.srcFolder}/assets/fonts/`));
+
 export const ttfToWoff = () =>
   appConfig.gulp
-    .src(`${appConfig.path.srcFolder}/fonts/*.ttf`, {})
+    .src(`${appConfig.path.srcFolder}/assets/fonts/*.ttf`, {})
     .pipe(
       fonter({
         formats: ['woff'],
       }),
     )
     .pipe(appConfig.gulp.dest(`${appConfig.path.build.fonts}`))
-    .pipe(appConfig.gulp.src(`${appConfig.path.srcFolder}/fonts/*.ttf`))
+    .pipe(appConfig.gulp.src(`${appConfig.path.srcFolder}/assets/fonts/*.ttf`))
     .pipe(ttf2woff2())
     .pipe(appConfig.gulp.dest(`${appConfig.path.build.fonts}`));
 
@@ -77,7 +79,7 @@ export const fontsStyle = () => {
                 break;
             }
 
-            const fontFace = `@font-face{\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../fonts/${fontFileName}.woff2") format("woff2"), url("../fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\r\n`;
+            const fontFace = `@font-face{\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../assets/fonts/${fontFileName}.woff2") format("woff2"), url("../assets/fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\n`;
 
             if (prevFontFace !== fontFace) {
               fs.appendFile(fontsFile, fontFace, cb);
@@ -87,9 +89,8 @@ export const fontsStyle = () => {
           }
         }
       } else {
-        // eslint-disable-next-line
-        console.log(
-          'File scss/fonts.scss already exists. Delete it to update.',
+        log.warn(
+          'File scss/fonts.scss already exists. If you have updated fonts somehow - delete the file to update.',
         );
       }
     }

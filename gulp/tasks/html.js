@@ -23,7 +23,6 @@ export function html() {
         }),
       ),
     )
-    .pipe(appConfig.plugins.gulpReplace(/@images\//g, 'images/'))
     .pipe(gulpFormatHtml())
     .pipe(appConfig.gulp.dest(appConfig.path.build.html))
     .pipe(appConfig.plugins.browserSync.stream());

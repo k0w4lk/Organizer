@@ -32,6 +32,5 @@ export const js = () =>
         },
       }),
     )
-    .pipe(appConfig.plugins.gulpReplace(/@images\//g, '../images/'))
     .pipe(appConfig.gulp.dest(appConfig.path.build.js))
     .pipe(appConfig.plugins.browserSync.stream());
