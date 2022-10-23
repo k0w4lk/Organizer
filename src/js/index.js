@@ -7,4 +7,8 @@ isWebp();
 
 const organizerApp = angular.module('organizerApp', ['ngSanitize']);
 
+organizerApp.component('preloader', {
+  templateUrl: 'html/components/preloader.html',
+});
+
 export { organizerApp };

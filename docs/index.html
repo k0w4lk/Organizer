@@ -10,11 +10,13 @@
 
   <title>Gulp</title>
 
-  <script src="index.js"></script>
+  <script defer src="index.js"></script>
 </head>
 
 <body>
-  <ng-include src="'html/components/header.html'"></ng-include>
+  <div ng-controller="quotesController">
+    <ng-include onload="setBackground()" src="'html/components/header.html'"></ng-include>
+  </div>
   <ng-include src="'html/components/todo.html'"></ng-include>
 </body>
 

@@ -1,12 +1,15 @@
 <div ng-controller="todoController">
   <h2>My Tasks</h2>
 
-  <input
-    type="text"
-    ng-model="taskName"
-  />
+  <form name="taskForm">
+    <input
+      type="text"
+      required
+      ng-model="taskName"
+    />
 
-  <button ng-click="setTask(taskName)">Add</button>
+    <button ng-click="setTask(taskName, taskForm)">Add</button>
+  </form>
 
   <div>
     <label>

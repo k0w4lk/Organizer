@@ -1,11 +1,10 @@
 import angular from 'angular';
+import { organizerApp } from '../index.js';
 
 const TASKS_GROUPS = {
   active: 'activeTasks',
   completed: 'completedTasks',
 };
-
-const organizerApp = angular.module('organizerApp');
 
 organizerApp.controller('todoController', ($scope) => {
   $scope.taskName = null;
@@ -26,18 +25,20 @@ organizerApp.controller('todoController', ($scope) => {
     }
   };
 
-  $scope.setTask = (taskName) => {
-    const task = {
-      name: taskName,
-    };
+  $scope.setTask = (taskName, taskForm) => {
+    if (taskForm.$valid) {
+      const task = {
+        name: taskName,
+      };
 
-    $scope.activeTasks.push(task);
+      $scope.activeTasks.push(task);
 
-    const updatedTasks = angular.toJson($scope.activeTasks);
+      const updatedTasks = angular.toJson($scope.activeTasks);
 
-    localStorage.setItem(TASKS_GROUPS.active, updatedTasks);
+      localStorage.setItem(TASKS_GROUPS.active, updatedTasks);
 
-    $scope.taskName = null;
+      $scope.taskName = null;
+    }
   };
 
   $scope.completeTask = (taskToComplete) => {
