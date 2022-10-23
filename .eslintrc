@@ -3,12 +3,11 @@
     "browser": true,
     "es2022": true
   },
-  "extends": ["airbnb-base"],
+  "extends": ["eslint:recommended", "plugin:import/recommended", "airbnb-base"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["unused-imports"],
   "rules": {
     "implicit-arrow-linebreak": ["off"],
     "import/extensions": ["error", { "js": "always" }],
@@ -17,9 +16,6 @@
     "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-param-reassign": ["error", { "props": false }],
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
-    "no-unused-vars": ["off"],
-    "unused-imports/no-unused-imports": ["error"],
-    "unused-imports/no-unused-vars": ["error"],
     "wrap-iife": ["error", "inside"]
   }
 }

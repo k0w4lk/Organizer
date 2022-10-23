@@ -13,6 +13,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
+
+    <base href="/" />
+
     <link
       rel="shortcut icon"
       href="assets/images/favicon.png"
@@ -29,9 +32,12 @@
       src="index.js"
     ></script>
   </head>
-  <body>
+  <body ng-init="setWebpSupportClass()">
     <app-header></app-header>
-    <app-quote-of-the-day></app-quote-of-the-day>
-    <app-todo></app-todo>
+    <nav>
+      <a href="/">Main</a>
+      <a href="/todo">Todo</a>
+    </nav>
+    <ng-view></ng-view>
   </body>
 </html>

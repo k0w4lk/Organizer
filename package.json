@@ -27,6 +27,7 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.8.3",
+    "angular-route": "^1.8.3",
     "angular-sanitize": "^1.8.3"
   },
   "devDependencies": {
@@ -36,7 +37,6 @@
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-unused-imports": "^2.0.0",
     "fancy-log": "^2.0.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^8.0.0",
