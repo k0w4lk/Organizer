@@ -1,0 +1,86 @@
+@mixin breakpointWeb() {
+  @media screen and (min-width: 840px) and (orientation: portrait),
+    (min-width: 1280px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointWebLandscape() {
+  @media screen and (min-width: 1280px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointWebPortrait() {
+  @media screen and (min-width: 840px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin breakpointTablet() {
+  @media screen and (min-width: 600px) and (max-width: 839.98px) and (orientation: portrait),
+    (min-width: 960px) and (max-width: 1279.98px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointTabletPortrait() {
+  @media screen and (min-width: 600px) and (max-width: 839.98px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin breakpointTabletLandscape() {
+  @media screen and (min-width: 960px) and (max-width: 1279.98px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointHandset() {
+  @media screen and (max-width: 599.98px) and (orientation: portrait),
+    (max-width: 959.98px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointHandsetLandscape() {
+  @media screen and (max-width: 959.98px) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin breakpointHandsetPortrait() {
+  @media screen and (max-width: 599.98px) and (orientation: portrait) {
+    @content;
+  }
+}
+
+@mixin breakpointXSmall() {
+  @media screen and (max-width: 599.98px) {
+    @content;
+  }
+}
+
+@mixin breakpointSmall() {
+  @media screen and (min-width: 600px) and (max-width: 959.98px) {
+    @content;
+  }
+}
+
+@mixin breakpointMedium() {
+  @media screen and (min-width: 960px) and (max-width: 1279.98px) {
+    @content;
+  }
+}
+
+@mixin breakpointLarge() {
+  @media screen and (min-width: 1280px) and (max-width: 1919.98px) {
+    @content;
+  }
+}
+
+@mixin breakpointXLarge() {
+  @media screen and (min-width: 1920px) {
+    @content;
+  }
+}

@@ -1,0 +1,91 @@
+.c-calendar {
+  display: grid;
+  width: max-content;
+  gap: rem(8);
+  grid-template-rows: max-content 1fr;
+  grid-template-columns: max-content 1fr max-content;
+  position: relative;
+  background: $grey-light;
+  padding: rem(8);
+  border: rem(1) solid $grey-dark;
+  border-radius: rem(4);
+
+  &__open-current-day {
+    position: absolute;
+    cursor: pointer;
+    top: rem(4);
+    left: rem(4);
+    border: none;
+    outline: none;
+
+    &:active {
+      outline: 1px solid $grey;
+    }
+  }
+
+  &__current-month {
+    grid-column-start: 2;
+    text-align: center;
+  }
+
+  &__change-month {
+    outline: none;
+    cursor: pointer;
+    grid-row-end: -1;
+    align-self: center;
+
+    &:active {
+      outline: 1px solid $black;
+    }
+
+    &_prev {
+      grid-column-start: 1;
+    }
+
+    &_next {
+      grid-column-start: -1;
+    }
+  }
+
+  &__day {
+    width: 100%;
+    height: 22px;
+    text-align: center;
+
+    &_red {
+      color: $red;
+    }
+  }
+
+  &__dates {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(7, max-content);
+    grid-auto-rows: max-content;
+    gap: rem(4) rem(8);
+    grid-column-start: 2;
+  }
+
+  &__date {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    line-height: 22px;
+    padding: 2px;
+
+    &_red {
+      color: $red;
+    }
+
+    &_today {
+      font-weight: bold;
+    }
+  }
+
+  &__calendar-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,12 @@
+@import 'src/assets/styles/utils/mixins.scss';
+
+:root {
+  font-family: 'Roboto', sans-serif;
+}
+
+.g-container {
+  position: relative;
+  max-width: rem(1440);
+  padding: rem(20);
+  margin: 0 auto;
+}

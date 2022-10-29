@@ -1,0 +1,60 @@
+<div
+  ng-controller="calendarController as calendarController"
+  class="c-calendar"
+>
+  <button
+    class="c-calendar__open-current-day"
+    title="Today"
+    ng-click="calendarController.openCurrentMonth()"
+  >
+    Today
+  </button>
+
+  <button
+    type="button"
+    title="Previous month"
+    class="c-calendar__change-month c-calendar__change-month_prev"
+    ng-click="calendarController.openPreviousMonth()"
+  >
+    &lt;
+  </button>
+
+  <button
+    type="button"
+    title="Next month"
+    class="c-calendar__change-month c-calendar__change-month_next"
+    ng-click="calendarController.openNextMonth()"
+  >
+    &gt;
+  </button>
+
+  <div
+    id="curr-month"
+    class="c-calendar__current-month"
+  >
+    {{calendarController.currentMonth | getMonthName }}
+    {{calendarController.currentYear}}
+  </div>
+
+  <div
+    class="c-calendar__dates"
+    ng-init="calendarController.setCurrentMonthDates()"
+  >
+    <div
+      class="c-calendar__day"
+      ng-class="{ 'c-calendar__day_red': $index === 5 || $index === 6 }"
+      ng-repeat="day in calendarController.days"
+    >
+      {{ day }}
+    </div>
+
+    <div
+      class="c-calendar__date"
+      grid-space="$first"
+      ng-repeat="date in calendarController.currentMonthDates"
+      ng-class="{ 'c-calendar__date_red': date.weekend || date.holiday, 'c-calendar__date_today': date.today }"
+    >
+      {{ date.date }}
+    </div>
+  </div>
+</div>

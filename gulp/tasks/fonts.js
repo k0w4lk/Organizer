@@ -28,7 +28,7 @@ export const ttfToWoff = () =>
     .pipe(appConfig.gulp.dest(`${appConfig.path.build.fonts}`));
 
 export const fontsStyle = () => {
-  const fontsFile = `${appConfig.path.srcFolder}/scss/utils/fonts.scss`;
+  const fontsFile = `${appConfig.path.srcFolder}/assets/styles/fonts.scss`;
   function cb() {}
 
   fs.readdir(appConfig.path.build.fonts, (err, fontsFiles) => {
@@ -79,7 +79,7 @@ export const fontsStyle = () => {
                 break;
             }
 
-            const fontFace = `@font-face{\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("../assets/fonts/${fontFileName}.woff2") format("woff2"), url("../assets/fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\n`;
+            const fontFace = `@font-face{\n\tfont-family: ${fontName};\n\tfont-display: swap;\n\tsrc: url("assets/fonts/${fontFileName}.woff2") format("woff2"), url("assets/fonts/${fontFileName}.woff") format("woff");\n\tfont-weight: ${fontWeight};\n\tfont-style: normal;\n}\n`;
 
             if (prevFontFace !== fontFace) {
               fs.appendFile(fontsFile, fontFace, cb);
@@ -90,7 +90,7 @@ export const fontsStyle = () => {
         }
       } else {
         log.warn(
-          'File scss/fonts.scss already exists. If you have updated fonts somehow - delete the file to update.',
+          'File fonts.scss already exists. If you have updated fonts somehow - delete the file to update.',
         );
       }
     }

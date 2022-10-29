@@ -1,8 +1,33 @@
 <header
-  class="header"
+  id="app-header"
+  class="c-header"
   ng-controller="headerController"
 >
-  <h1>{{'My organizer' | uppercase}}</h1>
+  <div class="g-container">
+    <h1 class="c-header__heading">{{'My organizer' | uppercase}}</h1>
 
-  <time ng-init="setCurrentDate()">{{ currentDate }}</time>
+    <time
+      ng-init="setCurrentDate()"
+      class="c-header__date"
+      >{{ currentDate }}</time
+    >
+
+    <div ng-controller="quotesController">
+      <div
+        ng-if="quoteOfTheDay === null"
+        class="quote__preloader"
+      >
+        <app-preloader></app-preloader>
+      </div>
+
+      <div
+        ng-show="quoteOfTheDay !== null"
+        class="quote"
+      >
+        <p class="quote__title">{{ quoteOfTheDay.title }}</p>
+        <p class="quote__author">{{ quoteOfTheDay.author }}</p>
+        <p class="quote__text">{{ quoteOfTheDay.text }}</p>
+      </div>
+    </div>
+  </div>
 </header>

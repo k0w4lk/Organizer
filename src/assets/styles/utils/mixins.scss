@@ -1,0 +1,9 @@
+@use 'sass:math';
+
+@function rem($px) {
+  @return math.div(math.round(math.div($px, 16) * 1000), 1000) + 0rem;
+}
+
+@function em($px) {
+  @return math.div(math.round(math.div($px, 16) * 1000), 1000) + 0em;
+}

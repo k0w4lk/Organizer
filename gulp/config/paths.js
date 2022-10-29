@@ -27,6 +27,7 @@ export const path = {
       `${srcFolder}/assets/**/*.*`,
       `!${srcFolder}/assets/fonts/**/*.*`,
       `!${srcFolder}/assets/images/**/*.*`,
+      `!${srcFolder}/assets/styles/**/*.*`,
     ],
   },
   watch: {

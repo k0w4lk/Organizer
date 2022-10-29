@@ -1,0 +1,44 @@
+.c-header {
+  color: $white;
+
+  &__heading {
+    text-align: center;
+  }
+
+  &__date {
+    position: absolute;
+    right: rem(20);
+    top: rem(20);
+  }
+}
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding: rem(8);
+  background-color: rgba($black, 0.5);
+  border: 1px solid $black;
+  border-radius: rem(4);
+  margin-top: rem(16);
+
+  &__preloader {
+    width: rem(16);
+    height: rem(16);
+  }
+
+  &__title {
+    text-align: center;
+    margin-bottom: rem(8);
+  }
+
+  &__author {
+    &::after {
+      content: ':';
+    }
+  }
+
+  &__text {
+    font-style: italic;
+  }
+}
